@@ -1,0 +1,66 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthEntity {
+  id: ID!
+  userId: Float!
+  refreshExpiresAt: DateTime!
+  createdAt: DateTime!
+  user: UserEntity!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type RoleEntity {
+  id: ID!
+  name: String!
+  slug: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: [UserEntity!]
+}
+
+type UserEntity {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  address: String!
+  phoneNumber: String!
+  email: String!
+  roleId: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  auth: [AuthEntity!]
+  role: RoleEntity!
+}
+
+type Query {
+  me: UserEntity!
+}
+
+type Mutation {
+  UpdateUser(updateUserInput: UpdateUserInput!): UserEntity!
+}
+
+"""Input type to update an user info"""
+input UpdateUserInput {
+  """First name of the user"""
+  firstName: String
+
+  """Last name of the user"""
+  lastName: String
+
+  """Address of the user"""
+  address: String
+
+  """Phone number of the user"""
+  phoneNumber: String
+
+  """Email number of the user"""
+  email: String
+}

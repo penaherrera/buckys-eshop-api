@@ -6,10 +6,21 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { AuthController } from './auth/controllers/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { UsersResolver } from './users/resolvers/users.resolver';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule],
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: false,
+      autoSchemaFile: 'src/schema.gql',
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    }),
+    PrismaModule,
+    AuthModule,
+    UsersModule,
+  ],
   controllers: [AuthController],
-  providers: [],
+  providers: [UsersResolver],
 })
 export class AppModule {}
