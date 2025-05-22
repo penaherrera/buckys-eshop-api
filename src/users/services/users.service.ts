@@ -7,8 +7,9 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from '../dtos/requests/create-user.dto';
-import { User } from '@prisma/client';
 import { genSalt, hash } from 'bcryptjs';
+import { UserEntity } from '../entities/user.entity';
+import { UpdateUserInput } from '../dtos/requests/update-user.input';
 
 @Injectable()
 export class UsersService {
@@ -16,16 +17,19 @@ export class UsersService {
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findUserByEmail(email: string): Promise<User> {
+  async findUserByEmail(email: string): Promise<UserEntity> {
     const user = await this.prismaService.user.findUnique({
       where: {
         email: email,
+      },
+      include: {
+        role: true,
       },
     });
 
     if (!user) {
       this.logger.log(`User with email ${email} doest not exist`);
-      throw new UnauthorizedException('User does not exist');
+      throw new UnauthorizedException('Invalid credentials');
     }
     return user;
   }
@@ -61,6 +65,28 @@ export class UsersService {
     });
 
     this.logger.log('User created successfully');
+  }
+
+  async update(
+    userId: number,
+    updateUserInput: UpdateUserInput,
+  ): Promise<Omit<UserEntity, 'role'>> {
+    const existingUser = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!existingUser) {
+      this.logger.warn(`User with ID ${userId} not found`);
+      throw new Error('User not found');
+    }
+
+    const updatedUser = await this.prismaService.user.update({
+      where: { id: userId },
+      data: { ...updateUserInput },
+    });
+
+    this.logger.log(`User updated successfully`);
+    return updatedUser;
   }
 
   private async bcryptPassword(password: string): Promise<string> {
