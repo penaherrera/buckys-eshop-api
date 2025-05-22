@@ -6,7 +6,7 @@ import { LogInData } from '../interfaces/sign-in-data.interface';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: AuthService) {
+  constructor(private readonly authService: AuthService) {
     super({
       usernameField: 'email',
     });
