@@ -10,7 +10,7 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
   app.setGlobalPrefix('api');
 
-  // app.useGlobalFilters(new HttpExceptionFilter()); research about impl
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.enableVersioning({
     type: VersioningType.URI,
