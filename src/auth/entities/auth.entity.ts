@@ -5,23 +5,23 @@ import { UserEntity } from '../../users/entities/user.entity'; // Import the Use
 @ObjectType()
 export class AuthEntity implements Auth {
   @Field(() => ID)
-  id: number;
+  readonly id: number;
 
   @HideField()
-  jti: string;
+  readonly jti: string;
 
   @Field()
-  userId: number;
+  readonly userId: number;
 
   @HideField()
-  refreshToken: string;
+  readonly refreshToken: string;
 
   @Field(() => Date)
-  refreshExpiresAt: Date;
+  readonly refreshExpiresAt: Date;
 
   @Field(() => Date)
-  createdAt: Date;
+  readonly createdAt: Date;
 
   @Field(() => UserEntity)
-  user: UserEntity;
+  readonly user: UserEntity;
 }
