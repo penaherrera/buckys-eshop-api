@@ -5,20 +5,20 @@ import { UserEntity } from '../../users/entities/user.entity';
 @ObjectType()
 export class RoleEntity implements Role {
   @Field(() => ID)
-  id: number;
+  readonly id: number;
 
   @Field()
-  name: string;
+  readonly name: string;
 
   @Field()
-  slug: string;
+  readonly slug: string;
 
   @Field(() => Date)
-  createdAt: Date;
+  readonly createdAt: Date;
 
   @Field(() => Date)
-  updatedAt: Date;
+  readonly updatedAt: Date;
 
   @Field(() => [UserEntity], { nullable: true })
-  user?: UserEntity[];
+  readonly user?: UserEntity[];
 }

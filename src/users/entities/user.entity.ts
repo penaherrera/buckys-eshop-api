@@ -1,4 +1,4 @@
-import { Field, HideField, ID, ObjectType } from '@nestjs/graphql';
+import { Field, HideField, ID, Int, ObjectType } from '@nestjs/graphql';
 import { User } from '@prisma/client';
 import { AuthEntity } from '../../auth/entities/auth.entity';
 import { RoleEntity } from '../../common/entities/role.entity';
@@ -8,19 +8,19 @@ export class UserEntity implements User {
   @Field(() => ID)
   readonly id: number;
 
-  @Field()
+  @Field(() => String)
   readonly firstName: string;
 
-  @Field()
+  @Field(() => String)
   readonly lastName: string;
 
-  @Field()
+  @Field(() => String)
   readonly address: string;
 
-  @Field()
+  @Field(() => String)
   readonly phoneNumber: string;
 
-  @Field()
+  @Field(() => String)
   readonly email: string;
 
   @HideField()
@@ -29,7 +29,7 @@ export class UserEntity implements User {
   @HideField()
   readonly resetPasswordToken: string | null;
 
-  @Field()
+  @Field(() => Int)
   readonly roleId: number;
 
   @Field(() => Date)
