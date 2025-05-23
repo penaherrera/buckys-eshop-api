@@ -48,3 +48,74 @@ model Auth {
   createdAt        DateTime @default(now())
   user             User     @relation(fields: [userId], references: [id])
 }
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
+model Brand {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model ProductType {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
+enum Gender {
+  UNISEX
+  MALE
+  FEMALE
+}
+
+model Product {
+  id            Int         @id @default(autoincrement())
+  categoryId    Int
+  brandId       Int
+  productTypeId Int
+  isActive      Boolean     @default(true)
+  inStock       Boolean     @default(true)
+  name          String
+  description   String
+  price         Decimal
+  gender        Gender      @default(UNISEX)
+  category      Category    @relation(fields: [categoryId], references: [id])
+  brand         Brand       @relation(fields: [brandId], references: [id])
+  productType   ProductType @relation(fields: [productTypeId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+  details       Detail[]
+}
+
+enum Size {
+  EXTRA_SMALL
+  SMALL
+  MEDIUM
+  LARGE
+  EXTRA_LARGE
+}
+
+model Detail {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  stock     Int
+  name      String
+  size      Size     @default(MEDIUM)
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
