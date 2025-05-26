@@ -3,33 +3,24 @@ import { Decimal } from '@prisma/client/runtime/library';
 import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
-
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 
 async function main() {
   // Create roles
-  const roles = await prisma.role.createMany({
+  await prisma.role.createMany({
     data: [
-      {
-        name: 'Administrator',
-        slug: 'admin',
-      },
-      {
-        name: 'Client',
-        slug: 'client',
-      },
+      { name: 'Administrator', slug: 'admin' },
+      { name: 'Client', slug: 'client' },
     ],
     skipDuplicates: true,
   });
 
-  console.log('Created roles:', roles);
-
-  // Hash password for admin
+  // Hash admin password
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, salt);
 
   // Create admin user
-  const adminUser = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: 'admin@example.com' },
     update: {},
     create: {
@@ -43,14 +34,8 @@ async function main() {
     },
   });
 
-  console.log('Created admin user:', adminUser);
-  console.log('Admin credentials:', {
-    email: 'admin@example.com',
-    password: ADMIN_PASSWORD,
-  });
-
   // Create categories
-  const categories = await prisma.category.createMany({
+  await prisma.category.createMany({
     data: [
       { name: 'Music' },
       { name: 'Anime' },
@@ -60,10 +45,8 @@ async function main() {
     skipDuplicates: true,
   });
 
-  console.log('Created categories:', categories);
-
   // Create brands
-  const brands = await prisma.brand.createMany({
+  await prisma.brand.createMany({
     data: [
       { name: 'Gibson', description: 'Leading music brand' },
       { name: 'Studio Ghibli', description: 'Innovative animation brand' },
@@ -73,18 +56,8 @@ async function main() {
     skipDuplicates: true,
   });
 
-  console.log('Created brands:', brands);
-
-  // Create product types
-  const productTypes = await prisma.productType.createMany({
-    data: [{ name: 'Clothing' }, { name: 'Footwear' }, { name: 'Accessory' }],
-    skipDuplicates: true,
-  });
-
-  console.log('Created product types:', productTypes);
-
   // Create products with variants
-  const products = await Promise.all([
+  await Promise.all([
     prisma.product.create({
       data: {
         name: 'Ravn T-Shirt',
@@ -95,7 +68,7 @@ async function main() {
         inStock: true,
         categoryId: 4, // Engineering
         brandId: 4, // Ravn
-        productTypeId: 1, // Clothing
+        clothingType: 'TSHIRT',
         variants: {
           create: [
             { stock: 50, color: 'White', size: 'SMALL' },
@@ -115,7 +88,7 @@ async function main() {
         inStock: true,
         categoryId: 3, // Sports
         brandId: 3, // Adidas
-        productTypeId: 1, // Clothing
+        clothingType: 'PANTS',
         variants: {
           create: [
             { stock: 25, color: 'Black', size: 'MEDIUM' },
@@ -134,7 +107,7 @@ async function main() {
         inStock: true,
         categoryId: 3, // Sports
         brandId: 3, // Adidas
-        productTypeId: 2, // Footwear
+        clothingType: 'FOOTWEAR',
         variants: {
           create: [
             { stock: 40, color: 'White', size: 'MEDIUM' },
@@ -153,15 +126,13 @@ async function main() {
         inStock: true,
         categoryId: 1, // Music
         brandId: 1, // Gibson
-        productTypeId: 1, // Clothing
+        clothingType: 'TSHIRT',
         variants: {
           create: [{ stock: 100, color: 'Red/Black', size: 'LARGE' }],
         },
       },
     }),
   ]);
-
-  console.log('Created products:', products);
 }
 
 main()

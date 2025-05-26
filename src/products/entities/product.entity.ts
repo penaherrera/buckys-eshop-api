@@ -3,14 +3,18 @@ import { Product } from '@prisma/client';
 import { BrandEntity } from '../../brands/entities/brand.entity';
 import { CategoryEntity } from '../../categories/entitites/category.entity';
 import { VariantEntity } from '../../variants/entities/variant.entity';
-import { ProductTypeEntity } from '../../product-types/entities/product-type.entity';
+
 import { Decimal } from '@prisma/client/runtime/library';
 import { GenderEnum } from '../enums/gender.enum';
+import { ClothingTypeEnum } from '../enums/clothing-type.enum';
 
 registerEnumType(GenderEnum, {
   name: 'GenderEnum',
 });
 
+registerEnumType(ClothingTypeEnum, {
+  name: 'ClothingTypeEnum',
+});
 @ObjectType()
 export class ProductEntity implements Product {
   @Field(() => ID)
@@ -21,9 +25,6 @@ export class ProductEntity implements Product {
 
   @Field(() => Number)
   readonly brandId: number;
-
-  @Field(() => Number)
-  readonly productTypeId: number;
 
   @Field(() => Boolean)
   readonly isActive: boolean;
@@ -43,14 +44,14 @@ export class ProductEntity implements Product {
   @Field(() => GenderEnum)
   readonly gender: GenderEnum;
 
+  @Field(() => ClothingTypeEnum)
+  readonly clothingType: ClothingTypeEnum;
+
   @Field(() => CategoryEntity)
   readonly category?: CategoryEntity;
 
   @Field(() => BrandEntity)
   readonly brand?: BrandEntity;
-
-  @Field(() => ProductTypeEntity)
-  readonly productType?: ProductTypeEntity;
 
   @Field(() => Date)
   readonly createdAt: Date;

@@ -67,38 +67,37 @@ model Brand {
   products    Product[]
 }
 
-model ProductType {
-  id        Int       @id @default(autoincrement())
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[]
-}
-
 enum Gender {
   UNISEX @map("UNISEX")
   MALE   @map("MALE")
   FEMALE @map("FEMALE")
 }
 
+enum ClothingType {
+  CLOTHING @map("CLOTHING")
+  TSHIRT   @map("TSHIRT")
+  FOOTWEAR @map("FOOTWEAR")
+  PANTS    @map("PANTS")
+  HAT      @map("HAT")
+}
+
 model Product {
-  id            Int         @id @default(autoincrement())
-  categoryId    Int
-  brandId       Int
-  productTypeId Int
-  isActive      Boolean     @default(true)
-  inStock       Boolean     @default(true)
-  name          String
-  description   String
-  price         Decimal
-  gender        Gender      @default(UNISEX)
-  category      Category    @relation(fields: [categoryId], references: [id])
-  brand         Brand       @relation(fields: [brandId], references: [id])
-  productType   ProductType @relation(fields: [productTypeId], references: [id])
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  deletedAt     DateTime?
-  variants      Variant[]
+  id           Int          @id @default(autoincrement())
+  categoryId   Int
+  brandId      Int
+  isActive     Boolean      @default(true)
+  inStock      Boolean      @default(true)
+  name         String
+  description  String
+  price        Decimal
+  gender       Gender       @default(UNISEX)
+  clothingType ClothingType @default(CLOTHING)
+  category     Category     @relation(fields: [categoryId], references: [id])
+  brand        Brand        @relation(fields: [brandId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  deletedAt    DateTime?
+  variants     Variant[]
 }
 
 enum Size {

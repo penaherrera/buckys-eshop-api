@@ -11,7 +11,6 @@ import { ProductsModule } from './products/products.module';
 import { VariantsModule } from './variants/variants.module';
 import { CategoriesModule } from './categories/categories.module';
 import { BrandsModule } from './brands/brands.module';
-import { ProductTypesModule } from './product-types/product-types.module';
 import { DataloaderModule } from './dataloader/dataloader.module';
 import { DataloaderService } from './dataloader/services/dataloader.service';
 
@@ -44,7 +43,6 @@ import { DataloaderService } from './dataloader/services/dataloader.service';
     VariantsModule,
     CategoriesModule,
     BrandsModule,
-    ProductTypesModule,
   ],
   controllers: [AuthController],
   providers: [UsersResolver],

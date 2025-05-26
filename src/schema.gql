@@ -76,28 +76,19 @@ enum Size {
   EXTRA_LARGE
 }
 
-type ProductTypeEntity {
-  id: ID!
-  name: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  products: [ProductEntity!]
-}
-
 type ProductEntity {
   id: ID!
   categoryId: Float!
   brandId: Float!
-  productTypeId: Float!
   isActive: Boolean!
   inStock: Boolean!
   name: String!
   description: String!
   price: Float!
   gender: GenderEnum!
+  clothingType: ClothingTypeEnum!
   category: CategoryEntity!
   brand: BrandEntity!
-  productType: ProductTypeEntity!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
@@ -108,6 +99,14 @@ enum GenderEnum {
   UNISEX
   MALE
   FEMALE
+}
+
+enum ClothingTypeEnum {
+  CLOTHING
+  TSHIRT
+  FOOTWEAR
+  PANTS
+  HAT
 }
 
 type Query {
@@ -147,9 +146,6 @@ input CreateProductInput {
   """Brand of the product"""
   brandId: Int!
 
-  """Type of the product"""
-  productTypeId: Int!
-
   """Product name"""
   name: String!
 
@@ -162,8 +158,11 @@ input CreateProductInput {
   """Product is active or not"""
   isActive: Boolean = true
 
-  """Indica si el producto está en stock"""
+  """Shows if product is in stock"""
   inStock: Boolean = true
+
+  """Clothing type of the product"""
+  clothingType: ClothingTypeEnum = CLOTHING
 
   """Product gender"""
   gender: GenderEnum = UNISEX
@@ -175,9 +174,6 @@ input UpdateProductInput {
 
   """Brand of the product"""
   brandId: Int
-
-  """Type of the product"""
-  productTypeId: Int
 
   """Product name"""
   name: String
@@ -191,8 +187,11 @@ input UpdateProductInput {
   """Product is active or not"""
   isActive: Boolean = true
 
-  """Indica si el producto está en stock"""
+  """Shows if product is in stock"""
   inStock: Boolean = true
+
+  """Clothing type of the product"""
+  clothingType: ClothingTypeEnum = CLOTHING
 
   """Product gender"""
   gender: GenderEnum = UNISEX
