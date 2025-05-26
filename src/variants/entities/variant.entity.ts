@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Detail } from '@prisma/client';
+import { Variant } from '@prisma/client';
 import { ProductEntity } from '../../products/entities/product.entity';
 import { Size } from '../enums/size.enum';
 
@@ -8,7 +8,7 @@ registerEnumType(Size, {
 });
 
 @ObjectType()
-export class DetailEntity implements Detail {
+export class VariantEntity implements Variant {
   @Field(() => ID)
   readonly id: number;
 
@@ -19,7 +19,7 @@ export class DetailEntity implements Detail {
   readonly stock: number;
 
   @Field(() => String)
-  readonly name: string;
+  readonly color: string;
 
   @Field(() => Size)
   readonly size: Size;

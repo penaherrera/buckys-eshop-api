@@ -31,7 +31,7 @@ type UserEntity {
   address: String!
   phoneNumber: String!
   email: String!
-  roleId: Float!
+  roleId: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
@@ -39,12 +39,87 @@ type UserEntity {
   role: RoleEntity!
 }
 
+type BrandEntity {
+  id: ID!
+  name: String!
+  description: String!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  products: [ProductEntity!]
+}
+
+type CategoryEntity {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  products: [ProductEntity!]
+}
+
+type VariantEntity {
+  id: ID!
+  productId: Float!
+  stock: Float!
+  color: String!
+  size: Size!
+  product: ProductEntity!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum Size {
+  EXTRA_SMALL
+  SMALL
+  MEDIUM
+  LARGE
+  EXTRA_LARGE
+}
+
+type ProductTypeEntity {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  products: [ProductEntity!]
+}
+
+type ProductEntity {
+  id: ID!
+  categoryId: Float!
+  brandId: Float!
+  productTypeId: Float!
+  isActive: Boolean!
+  inStock: Boolean!
+  name: String!
+  description: String!
+  price: Float!
+  gender: GenderEnum!
+  category: CategoryEntity!
+  brand: BrandEntity!
+  productType: ProductTypeEntity!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  variants: [VariantEntity!]
+}
+
+enum GenderEnum {
+  UNISEX
+  MALE
+  FEMALE
+}
+
 type Query {
   me: UserEntity!
+  products: [ProductEntity!]!
 }
 
 type Mutation {
   UpdateUser(updateUserInput: UpdateUserInput!): UserEntity!
+  createProduct(createProductInput: CreateProductInput!): ProductEntity!
+  updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
+  removeProduct(id: Int!): ProductEntity!
 }
 
 """Input type to update an user info"""
@@ -63,4 +138,63 @@ input UpdateUserInput {
 
   """Email number of the user"""
   email: String
+}
+
+input CreateProductInput {
+  """Category of the product"""
+  categoryId: Int!
+
+  """Brand of the product"""
+  brandId: Int!
+
+  """Type of the product"""
+  productTypeId: Int!
+
+  """Product name"""
+  name: String!
+
+  """Product description"""
+  description: String!
+
+  """Product price"""
+  price: Float!
+
+  """Product is active or not"""
+  isActive: Boolean = true
+
+  """Indica si el producto está en stock"""
+  inStock: Boolean = true
+
+  """Product gender"""
+  gender: GenderEnum = UNISEX
+}
+
+input UpdateProductInput {
+  """Category of the product"""
+  categoryId: Int
+
+  """Brand of the product"""
+  brandId: Int
+
+  """Type of the product"""
+  productTypeId: Int
+
+  """Product name"""
+  name: String
+
+  """Product description"""
+  description: String
+
+  """Product price"""
+  price: Float
+
+  """Product is active or not"""
+  isActive: Boolean = true
+
+  """Indica si el producto está en stock"""
+  inStock: Boolean = true
+
+  """Product gender"""
+  gender: GenderEnum = UNISEX
+  id: Int!
 }

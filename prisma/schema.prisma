@@ -76,9 +76,9 @@ model ProductType {
 }
 
 enum Gender {
-  UNISEX
-  MALE
-  FEMALE
+  UNISEX @map("UNISEX")
+  MALE   @map("MALE")
+  FEMALE @map("FEMALE")
 }
 
 model Product {
@@ -98,22 +98,22 @@ model Product {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   deletedAt     DateTime?
-  details       Detail[]
+  variants      Variant[]
 }
 
 enum Size {
-  EXTRA_SMALL
-  SMALL
-  MEDIUM
-  LARGE
-  EXTRA_LARGE
+  EXTRA_SMALL @map("EXTRA_SMALL")
+  SMALL       @map("SMALL")
+  MEDIUM      @map("MEDIUM")
+  LARGE       @map("LARGE")
+  EXTRA_LARGE @map("EXTRA_LARGE")
 }
 
-model Detail {
+model Variant {
   id        Int      @id @default(autoincrement())
   productId Int
   stock     Int
-  name      String
+  color     String
   size      Size     @default(MEDIUM)
   product   Product  @relation(fields: [productId], references: [id])
   createdAt DateTime @default(now())
