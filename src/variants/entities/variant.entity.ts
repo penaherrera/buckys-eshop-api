@@ -1,33 +1,30 @@
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Variant } from '@prisma/client';
 import { ProductEntity } from '../../products/entities/product.entity';
-import { Size } from '../enums/size.enum';
+import { SizeEnum } from '../enums/size.enum';
 
-registerEnumType(Size, {
-  name: 'Size',
+registerEnumType(SizeEnum, {
+  name: 'SizeEnum',
 });
 
 @ObjectType()
 export class VariantEntity implements Variant {
-  @Field(() => ID)
+  @Field(() => Int)
   readonly id: number;
 
-  @Field(() => Number)
+  @Field(() => Int)
   readonly productId: number;
 
-  @Field(() => Number)
+  @Field(() => Int)
   readonly stock: number;
 
   @Field(() => String)
   readonly color: string;
 
-  @Field(() => Size)
-  readonly size: Size;
+  @Field(() => SizeEnum)
+  readonly size: SizeEnum;
 
-  @Field(() => ProductEntity)
-  readonly product: ProductEntity;
-
-  @Field(() => Date)
+  @Field(() => Date) //scalar date?
   readonly createdAt: Date;
 
   @Field(() => Date)

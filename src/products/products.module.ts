@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductsResolver } from './products.resolver';
-import { PrismaModule } from '../prisma/prisma.module';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CategoriesService } from 'src/categories/services/categories.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { CategoriesService } from '../categories/services/categories.service';
+import { BrandsService } from '../brands/services/brands.service';
+import { VariantsService } from '../variants/services/variants.service';
 
 @Module({
   providers: [
@@ -11,6 +12,8 @@ import { CategoriesService } from 'src/categories/services/categories.service';
     ProductsService,
     PrismaService,
     CategoriesService,
+    BrandsService,
+    VariantsService,
   ],
 })
 export class ProductsModule {}

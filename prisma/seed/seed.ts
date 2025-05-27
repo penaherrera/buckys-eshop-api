@@ -3,14 +3,21 @@ import { Decimal } from '@prisma/client/runtime/library';
 import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
+
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 
 async function main() {
   // Create roles
   await prisma.role.createMany({
     data: [
-      { name: 'Administrator', slug: 'admin' },
-      { name: 'Client', slug: 'client' },
+      {
+        name: 'Administrator',
+        slug: 'admin',
+      },
+      {
+        name: 'Client',
+        slug: 'client',
+      },
     ],
     skipDuplicates: true,
   });

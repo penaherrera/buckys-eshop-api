@@ -96,3 +96,85 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Query examples:
+query GetProducts {
+  products {
+    id
+    name
+    isActive
+    inStock
+    clothingType
+    createdAt
+    category {
+      name
+    }
+    brand {
+      name
+      isActive
+    }
+    variants {
+      color
+      size
+      stock
+    }
+  }
+}
+
+
+mutation CreatePRoductWithVariants($createProductWithVariantsInput: CreateProductWithVariantsInput!){
+  createProductWithVariants(createProductWithVariantsInput: $createProductWithVariantsInput) {
+    id
+    name
+  }
+}
+
+{
+  "createProductWithVariantsInput": {
+    "product": {
+      "categoryId": 1,
+      "brandId": 1,
+      "name": "Camiseta Premium",
+      "description": "Camiseta de algodón 100% de alta calidad",
+      "price": 29.99,
+      "isActive": true,
+      "inStock": true,
+      "clothingType": "CLOTHING",
+      "gender": "UNISEX"
+    },
+    "variants": [
+      {
+        "stock": 50,
+        "color": "Blanco",
+        "size": "MEDIUM"
+      },
+      {
+        "stock": 30,
+        "color": "Negro",
+        "size": "LARGE"
+      },
+      {
+        "stock": 20,
+        "color": "Azul",
+        "size": "SMALL"
+      }
+    ]
+  }
+}
+
+mutation ToggleProductActive($id: Int!) {
+  toggleProductActive(id: $id) {
+    id
+    name
+    isActive
+    deletedAt
+  }
+}
+
+mutation RemoveProduct($id: Int!) {
+  removeProduct(id: $id) {
+    id
+    name
+    isActive
+  }
+}
