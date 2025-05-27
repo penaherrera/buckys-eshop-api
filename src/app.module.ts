@@ -13,6 +13,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { BrandsModule } from './brands/brands.module';
 import { DataloaderModule } from './dataloader/dataloader.module';
 import { DataloaderService } from './dataloader/services/dataloader.service';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { DataloaderService } from './dataloader/services/dataloader.service';
     VariantsModule,
     CategoriesModule,
     BrandsModule,
+    EmailModule,
   ],
   controllers: [AuthController],
   providers: [UsersResolver],

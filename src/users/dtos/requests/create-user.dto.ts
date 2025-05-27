@@ -1,16 +1,12 @@
 import {
-  IsBoolean,
   IsEmail,
   IsNotEmpty,
-  IsOptional,
   IsPhoneNumber,
   IsString,
   Length,
   Matches,
 } from 'class-validator';
-
-const PASSWORD_REGEXP =
-  /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+import { PASSWORD_REGEXP } from '../../../common/utils/password-regex';
 
 export class CreateUserDto {
   @IsNotEmpty()

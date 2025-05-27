@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -89,7 +90,7 @@ export class UsersService {
     return updatedUser;
   }
 
-  private async bcryptPassword(password: string): Promise<string> {
+  async bcryptPassword(password: string): Promise<string> {
     const salt: string = await genSalt();
     return hash(password, salt);
   }
