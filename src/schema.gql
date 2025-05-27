@@ -58,17 +58,16 @@ type CategoryEntity {
 }
 
 type VariantEntity {
-  id: ID!
-  productId: Float!
-  stock: Float!
+  id: Int!
+  productId: Int!
+  stock: Int!
   color: String!
-  size: Size!
-  product: ProductEntity!
+  size: SizeEnum!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-enum Size {
+enum SizeEnum {
   EXTRA_SMALL
   SMALL
   MEDIUM
@@ -92,7 +91,7 @@ type ProductEntity {
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
-  variants: [VariantEntity!]
+  variants: [VariantEntity!]!
 }
 
 enum GenderEnum {
@@ -116,8 +115,9 @@ type Query {
 
 type Mutation {
   UpdateUser(updateUserInput: UpdateUserInput!): UserEntity!
-  createProduct(createProductInput: CreateProductInput!): ProductEntity!
+  createProductWithVariants(createProductWithVariantsInput: CreateProductWithVariantsInput!): ProductEntity!
   updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
+  toggleProductActive(id: Int!): ProductEntity!
   removeProduct(id: Int!): ProductEntity!
 }
 
@@ -137,6 +137,11 @@ input UpdateUserInput {
 
   """Email number of the user"""
   email: String
+}
+
+input CreateProductWithVariantsInput {
+  product: CreateProductInput!
+  variants: [CreateVariantInput!]!
 }
 
 input CreateProductInput {
@@ -166,6 +171,20 @@ input CreateProductInput {
 
   """Product gender"""
   gender: GenderEnum = UNISEX
+}
+
+input CreateVariantInput {
+  """Product Id"""
+  productId: Int
+
+  """Stock quantity"""
+  stock: Int!
+
+  """Variant color"""
+  color: String!
+
+  """Variant size"""
+  size: SizeEnum = MEDIUM
 }
 
 input UpdateProductInput {
