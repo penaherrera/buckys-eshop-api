@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { LikeEntity } from '../entities/like.entity';
-import { ProductEntity } from 'src/products/entities/product.entity';
-import { GenderEnum } from 'src/products/enums/gender.enum';
-import { ClothingTypeEnum } from 'src/products/enums/clothing-type.enum';
+import { ProductEntity } from '../../products/entities/product.entity';
+import { GenderEnum } from '../../products/enums/gender.enum';
+import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
 
 @Injectable()
 export class LikesService {

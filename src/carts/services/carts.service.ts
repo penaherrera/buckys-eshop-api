@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { CartEntity } from '../entities/cart.entity';
-import { SizeEnum } from 'src/variants/enums/size.enum';
-import { GenderEnum } from 'src/products/enums/gender.enum';
-import { ClothingTypeEnum } from 'src/products/enums/clothing-type.enum';
+import { SizeEnum } from '../../variants/enums/size.enum';
+import { GenderEnum } from '../../products/enums/gender.enum';
+import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
 
 @Injectable()
 export class CartsService {

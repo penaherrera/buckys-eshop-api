@@ -1,11 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { CartProductEntity } from '../entities/cart-product.entity';
-import { CartEntity } from '../../carts/entities/cart.entity';
-import { SizeEnum } from 'src/variants/enums/size.enum';
-import { CartsService } from 'src/carts/services/carts.service';
-import { ClothingTypeEnum } from 'src/products/enums/clothing-type.enum';
-import { GenderEnum } from 'src/products/enums/gender.enum';
+import { SizeEnum } from '../../variants/enums/size.enum';
+import { CartsService } from '../../carts/services/carts.service';
+import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
+import { GenderEnum } from '../../products/enums/gender.enum';
 
 @Injectable()
 export class CartProductsService {

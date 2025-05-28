@@ -6,7 +6,7 @@ import { GenderEnum } from '../enums/gender.enum';
 import { ProductEntity } from '../entities/product.entity';
 import { ClothingTypeEnum } from '../enums/clothing-type.enum';
 import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.inputs';
-import { VariantsService } from 'src/variants/services/variants.service';
+import { VariantsService } from '../../variants/services/variants.service';
 
 @Injectable()
 export class ProductsService {

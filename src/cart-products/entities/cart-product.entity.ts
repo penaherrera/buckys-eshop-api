@@ -1,7 +1,7 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 import { CartProducts } from '@prisma/client';
-import { CartEntity } from 'src/carts/entities/cart.entity';
-import { VariantEntity } from 'src/variants/entities/variant.entity';
+import { CartEntity } from '../../carts/entities/cart.entity';
+import { VariantEntity } from '../../variants/entities/variant.entity';
 
 @ObjectType()
 export class CartProductEntity implements CartProducts {

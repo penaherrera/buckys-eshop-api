@@ -10,8 +10,7 @@ import { AuthService } from '../services/auth.service';
 import { PassportLocalGuard } from '../guards/passport-local.guard';
 import { CreateUserDto } from '../../users/dtos/requests/create-user.dto';
 import { JwtResponseDto } from '../dtos/responses/jwt-response.dto';
-import { EmailService } from 'src/email/email.service';
-import { ResetPasswordDto } from 'src/auth/dtos/requests/reset-password.dto';
+import { ResetPasswordDto } from '../../auth/dtos/requests/reset-password.dto';
 import { EmailDto } from '../dtos/requests/email.dto';
 import { PasswordService } from '../services/password.service';
 

@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LikesService } from './services/likes.service';
 import { GetUser } from '../users/decorators/get-user.decorator';
 import { UserEntity } from '../users/entities/user.entity';
-import { ProductEntity } from 'src/products/entities/product.entity';
+import { ProductEntity } from '../products/entities/product.entity';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => LikeEntity)
