@@ -6,7 +6,6 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { AuthController } from './auth/controllers/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { UsersResolver } from './users/resolvers/users.resolver';
 import { ProductsModule } from './products/products.module';
 import { VariantsModule } from './variants/variants.module';
 import { CategoriesModule } from './categories/categories.module';
@@ -14,6 +13,7 @@ import { BrandsModule } from './brands/brands.module';
 import { DataloaderModule } from './dataloader/dataloader.module';
 import { DataloaderService } from './dataloader/services/dataloader.service';
 import { EmailModule } from './email/email.module';
+import { LikesModule } from './likes/likes.module';
 
 @Module({
   imports: [
@@ -45,8 +45,8 @@ import { EmailModule } from './email/email.module';
     CategoriesModule,
     BrandsModule,
     EmailModule,
+    LikesModule,
   ],
   controllers: [AuthController],
-  providers: [UsersResolver],
 })
 export class AppModule {}

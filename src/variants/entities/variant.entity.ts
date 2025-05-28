@@ -7,7 +7,6 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { Variant } from '@prisma/client';
-import { ProductEntity } from '../../products/entities/product.entity';
 import { SizeEnum } from '../enums/size.enum';
 
 registerEnumType(SizeEnum, {

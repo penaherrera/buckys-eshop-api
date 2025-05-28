@@ -41,15 +41,13 @@ export class AuthController {
   }
 
   @Post('forgot-password')
-  async sendEmail(@Body() emailDto: EmailDto): Promise<void> {
-    await this.passwordService.forgotPassword(emailDto.email);
+  sendEmail(@Body() emailDto: EmailDto): Promise<void> {
+    return this.passwordService.forgotPassword(emailDto.email);
   }
 
   @Patch('reset-password')
-  async resetPassword(
-    @Body() resetPasswordDto: ResetPasswordDto,
-  ): Promise<void> {
-    await this.passwordService.resetPassword(resetPasswordDto);
+  resetPassword(@Body() resetPasswordDto: ResetPasswordDto): Promise<void> {
+    return this.passwordService.resetPassword(resetPasswordDto);
   }
 
   // sign out missing

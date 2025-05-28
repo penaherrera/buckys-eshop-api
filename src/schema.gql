@@ -108,9 +108,18 @@ enum ClothingTypeEnum {
   HAT
 }
 
+type LikeEntity {
+  id: Int!
+  productId: Int!
+  userId: Int!
+  createdAt: DateTime!
+  products: [ProductEntity!]
+}
+
 type Query {
   me: UserEntity!
   products: [ProductEntity!]!
+  userLikes: [ProductEntity!]!
 }
 
 type Mutation {
@@ -119,6 +128,7 @@ type Mutation {
   updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
   toggleProductActive(id: Int!): ProductEntity!
   removeProduct(id: Int!): ProductEntity!
+  toggleLike(productId: Int!): LikeEntity
 }
 
 """Input type to update an user info"""
