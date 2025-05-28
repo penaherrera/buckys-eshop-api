@@ -1,9 +1,14 @@
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { Product } from '@prisma/client';
 import { BrandEntity } from '../../brands/entities/brand.entity';
 import { CategoryEntity } from '../../categories/entitites/category.entity';
 import { VariantEntity } from '../../variants/entities/variant.entity';
-
 import { Decimal } from '@prisma/client/runtime/library';
 import { GenderEnum } from '../enums/gender.enum';
 import { ClothingTypeEnum } from '../enums/clothing-type.enum';
@@ -53,13 +58,13 @@ export class ProductEntity implements Product {
   @Field(() => BrandEntity)
   readonly brand?: BrandEntity;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   readonly createdAt: Date;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   readonly updatedAt: Date;
 
-  @Field(() => Date, { nullable: true })
+  @Field(() => GraphQLISODateTime, { nullable: true })
   readonly deletedAt: Date | null;
 
   @Field(() => [VariantEntity], { nullable: true })

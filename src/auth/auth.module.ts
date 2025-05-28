@@ -5,7 +5,7 @@ import { AuthController } from './controllers/auth.controller';
 import { LocalStrategy } from './strategies/local.strategy';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../common/prisma/prisma.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { EmailService } from '../email/email.service';
 import { SendGridClient } from '../email/sendgrid-client';

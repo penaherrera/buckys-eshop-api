@@ -6,7 +6,7 @@ import { LogInData } from '../interfaces/sign-in-data.interface';
 import { JwtResponseDto } from '../dtos/responses/jwt-response.dto';
 import { CreateUserDto } from '../../users/dtos/requests/create-user.dto';
 import { AuthResponseDto } from '../dtos/responses/auth-response.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { JwtPayloadAuth } from '../interfaces/jwt-payload-auth.interface';
 import { compare } from 'bcryptjs';
 import { Auth } from '@prisma/client';
@@ -39,10 +39,10 @@ export class AuthService {
     const auth = await this.prismaService.auth.create({
       data: {
         createdAt: now,
-        userId: userId,
-        refreshExpiresAt: refreshExpiresAt,
-        jti: jti,
-        refreshToken: refreshToken,
+        userId,
+        refreshExpiresAt,
+        jti,
+        refreshToken,
       },
     });
 

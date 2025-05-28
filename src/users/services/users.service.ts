@@ -6,7 +6,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { CreateUserDto } from '../dtos/requests/create-user.dto';
 import { genSalt, hash } from 'bcryptjs';
 import { UserEntity } from '../entities/user.entity';

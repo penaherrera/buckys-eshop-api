@@ -1,5 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { VariantEntity } from '../entities/variant.entity';
 import { SizeEnum } from '../enums/size.enum';
 import { CreateVariantInput } from '../dtos/create-variant.input';

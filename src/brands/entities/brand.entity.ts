@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, GraphQLISODateTime } from '@nestjs/graphql';
 import { Brand } from '@prisma/client';
 import { ProductEntity } from '../../products/entities/product.entity';
 
@@ -16,10 +16,10 @@ export class BrandEntity implements Brand {
   @Field(() => Boolean)
   readonly isActive: boolean;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   readonly createdAt: Date;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   readonly updatedAt: Date;
 
   @Field(() => [ProductEntity], { nullable: true })

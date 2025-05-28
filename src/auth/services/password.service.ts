@@ -7,7 +7,7 @@ import {
 
 import { JwtService } from '@nestjs/jwt';
 import { ResetPasswordDto } from '../../auth/dtos/requests/reset-password.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { UsersService } from 'src/users/services/users.service';
 import { nanoid } from 'nanoid';
 import { EmailService } from 'src/email/email.service';

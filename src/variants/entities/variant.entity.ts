@@ -1,4 +1,11 @@
-import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  Int,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { Variant } from '@prisma/client';
 import { ProductEntity } from '../../products/entities/product.entity';
 import { SizeEnum } from '../enums/size.enum';
@@ -24,9 +31,9 @@ export class VariantEntity implements Variant {
   @Field(() => SizeEnum)
   readonly size: SizeEnum;
 
-  @Field(() => Date) //scalar date?
+  @Field(() => GraphQLISODateTime)
   readonly createdAt: Date;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   readonly updatedAt: Date;
 }

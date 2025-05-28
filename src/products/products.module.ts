@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ProductsService } from './products.service';
+import { ProductsService } from './services/products.service';
 import { ProductsResolver } from './products.resolver';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../common/prisma/prisma.service';
 import { CategoriesService } from '../categories/services/categories.service';
 import { BrandsService } from '../brands/services/brands.service';
 import { VariantsService } from '../variants/services/variants.service';

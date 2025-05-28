@@ -8,7 +8,7 @@ import {
   Parent,
   Context,
 } from '@nestjs/graphql';
-import { ProductsService } from './products.service';
+import { ProductsService } from './services/products.service';
 import { ProductEntity } from './entities/product.entity';
 import { UpdateProductInput } from './dtos/update-product.input';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

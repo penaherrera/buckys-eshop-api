@@ -1,11 +1,11 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateProductInput } from './dtos/create-product.input';
-import { UpdateProductInput } from './dtos/update-product.input';
-import { PrismaService } from '../prisma/prisma.service';
-import { GenderEnum } from './enums/gender.enum';
-import { ProductEntity } from './entities/product.entity';
-import { ClothingTypeEnum } from './enums/clothing-type.enum';
-import { CreateProductWithVariantsInput } from './dtos/create-product-variants.inputs';
+import { CreateProductInput } from '../dtos/create-product.input';
+import { UpdateProductInput } from '../dtos/update-product.input';
+import { PrismaService } from '../../common/prisma/prisma.service';
+import { GenderEnum } from '../enums/gender.enum';
+import { ProductEntity } from '../entities/product.entity';
+import { ClothingTypeEnum } from '../enums/clothing-type.enum';
+import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.inputs';
 import { VariantsService } from 'src/variants/services/variants.service';
 
 @Injectable()

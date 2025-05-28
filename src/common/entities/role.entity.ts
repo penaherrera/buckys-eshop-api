@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 import { Role } from '@prisma/client';
 import { UserEntity } from '../../users/entities/user.entity';
 
@@ -13,10 +13,10 @@ export class RoleEntity implements Role {
   @Field()
   readonly slug: string;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   readonly createdAt: Date;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   readonly updatedAt: Date;
 
   @Field(() => [UserEntity], { nullable: true })
