@@ -29,6 +29,7 @@ model User {
   auth               Auth[]
   role               Role      @relation(fields: [roleId], references: [id])
   likes              Like[]
+  carts              Cart[]
 }
 
 model Role {
@@ -111,14 +112,15 @@ enum Size {
 }
 
 model Variant {
-  id        Int      @id @default(autoincrement())
+  id        Int            @id @default(autoincrement())
   productId Int
   stock     Int
   color     String
-  size      Size     @default(MEDIUM)
-  product   Product  @relation(fields: [productId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  size      Size           @default(MEDIUM)
+  product   Product        @relation(fields: [productId], references: [id])
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  carts     CartProducts[]
 }
 
 model Like {
@@ -127,5 +129,23 @@ model Like {
   userId    Int
   product   Product  @relation(fields: [productId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Cart {
+  id           Int            @id @default(autoincrement())
+  userId       Int
+  user         User           @relation(fields: [userId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  cartProducts CartProducts[]
+}
+
+model CartProducts {
+  id        Int      @id @default(autoincrement())
+  variantId Int
+  cartId    Int
+  variant   Variant  @relation(fields: [variantId], references: [id])
+  cart      Cart     @relation(fields: [cartId], references: [id])
   createdAt DateTime @default(now())
 }

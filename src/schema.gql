@@ -65,6 +65,7 @@ type VariantEntity {
   size: SizeEnum!
   createdAt: DateTime!
   updatedAt: DateTime!
+  product: ProductEntity!
 }
 
 enum SizeEnum {
@@ -116,10 +117,29 @@ type LikeEntity {
   products: [ProductEntity!]
 }
 
+type CartEntity {
+  id: ID!
+  userId: Float!
+  user: UserEntity!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  cartProducts: [CartProductEntity!]
+}
+
+type CartProductEntity {
+  id: ID!
+  variantId: Float!
+  cartId: Float!
+  variant: VariantEntity
+  cart: CartEntity
+  createdAt: DateTime!
+}
+
 type Query {
   me: UserEntity!
   products: [ProductEntity!]!
   userLikes: [ProductEntity!]!
+  userCart: CartEntity
 }
 
 type Mutation {
@@ -129,6 +149,9 @@ type Mutation {
   toggleProductActive(id: Int!): ProductEntity!
   removeProduct(id: Int!): ProductEntity!
   toggleLike(productId: Int!): LikeEntity
+  addToCart(variantId: Int!): CartProductEntity!
+  removeFromCart(cartProductId: Int!): Boolean!
+  clearCart: Boolean!
 }
 
 """Input type to update an user info"""

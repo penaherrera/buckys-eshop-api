@@ -14,6 +14,8 @@ import { DataloaderModule } from './dataloader/dataloader.module';
 import { DataloaderService } from './dataloader/services/dataloader.service';
 import { EmailModule } from './email/email.module';
 import { LikesModule } from './likes/likes.module';
+import { CartsModule } from './carts/carts.module';
+import { CartProductsModule } from './cart-products/cart-products.module';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { LikesModule } from './likes/likes.module';
     BrandsModule,
     EmailModule,
     LikesModule,
+    CartsModule,
+    CartProductsModule,
   ],
   controllers: [AuthController],
 })
