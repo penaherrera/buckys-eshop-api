@@ -16,6 +16,9 @@ import { EmailModule } from './email/email.module';
 import { LikesModule } from './likes/likes.module';
 import { CartsModule } from './carts/carts.module';
 import { CartProductsModule } from './cart-products/cart-products.module';
+import { PaymentsModule } from './payments/payments.module';
+import { OrdersModule } from './orders/orders.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -50,6 +53,9 @@ import { CartProductsModule } from './cart-products/cart-products.module';
     LikesModule,
     CartsModule,
     CartProductsModule,
+    PaymentsModule,
+    OrdersModule,
+    TransactionsModule,
   ],
   controllers: [AuthController],
 })

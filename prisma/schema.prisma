@@ -139,6 +139,7 @@ model Cart {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   cartProducts CartProducts[]
+  order        Order?
 }
 
 model CartProducts {
@@ -148,4 +149,33 @@ model CartProducts {
   variant   Variant  @relation(fields: [variantId], references: [id])
   cart      Cart     @relation(fields: [cartId], references: [id])
   createdAt DateTime @default(now())
+}
+
+enum Status {
+  PENDING   @map("PENDING")
+  ACTIVE    @map("ACTIVE")
+  COMPLETED @map("COMPLETED")
+  CANCELLED @map("CANCELLED")
+}
+
+model Order {
+  id                    Int           @id @default(autoincrement())
+  cartId                Int           @unique
+  status                Status        @default(PENDING)
+  stripePaymentIntendId String
+  cart                  Cart          @relation(fields: [cartId], references: [id])
+  createdAt             DateTime      @default(now())
+  transactions          Transaction[]
+}
+
+model Transaction {
+  id             Int      @id @default(autoincrement())
+  orderId        Int
+  amount         Int
+  stripeChargeId String
+  receiptUrl     String
+  currency       String
+  stripeStatus   String
+  createdAt      DateTime @default(now())
+  order          Order    @relation(fields: [orderId], references: [id])
 }
