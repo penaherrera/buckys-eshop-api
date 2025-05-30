@@ -5,9 +5,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LikesService } from './services/likes.service';
 import { GetUser } from '../users/decorators/get-user.decorator';
 import { UserEntity } from '../users/entities/user.entity';
-import { ProductEntity } from '../products/entities/product.entity';
 import { LikeDto } from './dtos/like.dto';
-import { ProductDto } from 'src/products/dtos/responses/product.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
 
 @UseFilters(GraphQlExceptionFilter)

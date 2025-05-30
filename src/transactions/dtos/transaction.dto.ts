@@ -6,7 +6,7 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 import { Expose } from 'class-transformer';
-import { OrderDto } from 'src/orders/dtos/order.dto';
+import { OrderDto } from '../../orders/dtos/order.dto';
 
 @ObjectType()
 export class TransactionDto {

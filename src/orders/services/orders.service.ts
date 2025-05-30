@@ -1,7 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { OrderEntity } from '../entities/order.entity';
-import { SizeEnum } from 'src/variants/enums/size.enum';
 import { plainToInstance } from 'class-transformer';
 import { OrderDto } from '../dtos/order.dto';
 

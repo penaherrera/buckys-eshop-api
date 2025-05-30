@@ -7,9 +7,9 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { Order, Status } from '@prisma/client';
-import { CartEntity } from 'src/carts/entities/cart.entity';
+import { CartEntity } from '../../carts/entities/cart.entity';
 import { StatusEnum } from '../enums/status.enum';
-import { TransactionEntity } from 'src/transactions/entities/transaction.entity';
+import { TransactionEntity } from '../../transactions/entities/transaction.entity';
 
 registerEnumType(StatusEnum, {
   name: 'StatusEnum',
