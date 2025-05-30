@@ -6,6 +6,8 @@ import { UserEntity } from '../users/entities/user.entity';
 import { UseFilters, UseGuards } from '@nestjs/common';
 import { GetUser } from '../users/decorators/get-user.decorator';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
+import { AdminGuard } from '../common/guards/admin.guard';
+import { OrderDto } from './dtos/order.dto';
 
 @UseFilters(GraphQlExceptionFilter)
 @UseGuards(JwtAuthGuard)
@@ -13,10 +15,20 @@ import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filt
 export class OrdersResolver {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Query(() => [OrderEntity], { name: 'userOrders' })
-  async getUserOrders(
-    @GetUser() user: UserEntity,
-  ): Promise<OrderEntity[] | null> {
+  @Query(() => [OrderEntity], {
+    name: 'myOrders',
+    description: 'Retrieve orders from current user',
+  })
+  getUserOrders(@GetUser() user: UserEntity): Promise<OrderDto[] | null> {
     return this.ordersService.getUserOrders(user.id);
+  }
+
+  @UseGuards(AdminGuard)
+  @Query(() => [OrderEntity], {
+    name: 'allOrders',
+    description: 'Admin Query: retrieve all existing orders',
+  })
+  getAllOrders(): Promise<OrderDto[]> {
+    return this.ordersService.getAllOrders();
   }
 }

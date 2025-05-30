@@ -194,7 +194,6 @@ type CartProductDto {
   variant: VariantDto
   cart: CartDto
   createdAt: DateTime!
-  updatedAt: DateTime
 }
 
 type CartDto {
@@ -212,6 +211,35 @@ type LikeEntity {
   userId: Int!
   createdAt: DateTime!
   products: [ProductEntity!]
+}
+
+type TransactionDto {
+  id: ID!
+  orderId: Int!
+  amount: Int!
+  stripeChargeId: String!
+  receiptUrl: String!
+  currency: String!
+  stripeStatus: String!
+  createdAt: DateTime!
+  order: OrderDto!
+}
+
+type OrderDto {
+  id: ID!
+  cartId: Int!
+  status: StatusEnum!
+  stripePaymentIntentId: String!
+  createdAt: DateTime!
+  cart: CartDto!
+  transactions: [TransactionDto!]
+}
+
+enum StatusEnum {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
 }
 
 type TransactionEntity {
@@ -241,7 +269,12 @@ type Query {
   userCart: CartEntity
   products: [ProductEntity!]!
   userLikes: [ProductEntity!]!
-  userOrders: [OrderEntity!]!
+
+  """Retrieve orders from current user"""
+  myOrders: [OrderEntity!]!
+
+  """Admin Query: retrieve all existing orders"""
+  allOrders: [OrderEntity!]!
 }
 
 type Mutation {

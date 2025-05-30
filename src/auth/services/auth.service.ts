@@ -23,9 +23,9 @@ export class AuthService {
   ) {}
 
   private readonly REFRESH_EXP: number = parseInt(
-    process.env.JWT_EXP_REFRESH ?? '0',
+    process.env.JWT_EXP_REFRESH || '0',
   );
-  private readonly JWT_EXP: number = parseInt(process.env.JWT_EXP ?? '0');
+  private readonly JWT_EXP: number = parseInt(process.env.JWT_EXP || '0');
 
   async create(userId: number): Promise<Auth> {
     const now = new Date();

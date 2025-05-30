@@ -28,8 +28,4 @@ export class CartProductDto {
   @Field(() => GraphQLISODateTime)
   @Expose()
   createdAt: Date;
-
-  @Field(() => GraphQLISODateTime, { nullable: true })
-  @Expose()
-  updatedAt: Date;
 }

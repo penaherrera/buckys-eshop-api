@@ -2,6 +2,8 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { OrderEntity } from '../entities/order.entity';
 import { SizeEnum } from 'src/variants/enums/size.enum';
+import { plainToInstance } from 'class-transformer';
+import { OrderDto } from '../dtos/order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -38,13 +40,9 @@ export class OrdersService {
     return order;
   }
 
-  async getUserOrders(userId: number): Promise<OrderEntity[]> {
+  async getUserOrders(userId: number): Promise<OrderDto[]> {
     const orders = await this.prismaService.order.findMany({
-      where: {
-        cart: {
-          userId: userId,
-        },
-      },
+      where: { cart: { userId } },
       orderBy: { createdAt: 'desc' },
       include: {
         transactions: true,
@@ -52,11 +50,7 @@ export class OrdersService {
           include: {
             cartProducts: {
               include: {
-                variant: {
-                  include: {
-                    product: true,
-                  },
-                },
+                variant: { include: { product: true } },
               },
             },
           },
@@ -64,23 +58,43 @@ export class OrdersService {
       },
     });
 
-    return orders.map((order) => {
-      const mappedCartProducts = order.cart.cartProducts.map((cartProduct) => ({
-        ...cartProduct,
-        variant: {
-          ...cartProduct.variant,
-          size: cartProduct.variant.size as SizeEnum,
-        },
-      }));
+    const transformedOrders = orders.map((order) => ({
+      ...order,
+      cart: {
+        ...order.cart,
+        cartProducts: order.cart.cartProducts.map((cp) => ({
+          ...cp,
+          variant: {
+            ...cp.variant,
+            product: cp.variant.product && {
+              ...cp.variant.product,
+              price: cp.variant.product.price.toNumber(),
+            },
+          },
+        })),
+      },
+    }));
 
-      return {
-        ...order,
+    return plainToInstance(OrderDto, transformedOrders);
+  }
+
+  async getAllOrders(): Promise<OrderDto[]> {
+    const orders = await this.prismaService.order.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
         cart: {
-          ...order.cart,
-          cartProducts: mappedCartProducts,
+          include: {
+            user: true,
+          },
         },
-        transactions: order.transactions,
-      } as OrderEntity;
+      },
     });
+
+    const transformedOrders = orders.map((order) => ({
+      ...order,
+      user: order.cart.user,
+    }));
+
+    return plainToInstance(OrderDto, transformedOrders);
   }
 }
