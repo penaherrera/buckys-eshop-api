@@ -19,6 +19,7 @@ import { IDataloaders } from '../dataloader/interfaces/dataloader.interface';
 import { BrandEntity } from '../brands/entities/brand.entity';
 import { VariantEntity } from '../variants/entities/variant.entity';
 import { CreateProductWithVariantsInput } from './dtos/create-product-variants.inputs';
+import { ProductDto } from './dtos/responses/product.dto';
 
 @Resolver(() => ProductEntity)
 export class ProductsResolver {
@@ -29,14 +30,14 @@ export class ProductsResolver {
   createProduct(
     @Args('createProductWithVariantsInput')
     createProductWithVariantsInput: CreateProductWithVariantsInput,
-  ): Promise<ProductEntity> {
+  ): Promise<ProductDto> {
     return this.productsService.createWithVariants(
       createProductWithVariantsInput,
     );
   }
 
   @Query(() => [ProductEntity], { name: 'products' })
-  findAll(): Promise<ProductEntity[]> {
+  findAll(): Promise<ProductDto[]> {
     return this.productsService.findAll();
   }
 
@@ -79,7 +80,7 @@ export class ProductsResolver {
   @Mutation(() => ProductEntity, { name: 'toggleProductActive' })
   toggleProductActive(
     @Args('id', { type: () => Int }) id: number,
-  ): Promise<ProductEntity> {
+  ): Promise<ProductDto> {
     return this.productsService.toggleActive(id);
   }
 
@@ -87,7 +88,7 @@ export class ProductsResolver {
   @Mutation(() => ProductEntity, { name: 'removeProduct' })
   removeProduct(
     @Args('id', { type: () => Int }) id: number,
-  ): Promise<ProductEntity> {
+  ): Promise<ProductDto> {
     return this.productsService.remove(id);
   }
 }

@@ -1,24 +1,24 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import { CartProductEntity } from '../entities/cart-product.entity';
-import { SizeEnum } from '../../variants/enums/size.enum';
-import { CartsService } from '../../carts/services/carts.service';
-import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
-import { GenderEnum } from '../../products/enums/gender.enum';
+import { CartProductDto } from '../dtos/cart-product.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CartProductsService {
   private readonly logger = new Logger(CartProductsService.name);
 
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly cartsService: CartsService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async addToCart(
     userId: number,
     variantId: number,
-  ): Promise<CartProductEntity> {
+    cartId?: number | null,
+  ): Promise<CartProductDto> {
     const variant = await this.prismaService.variant.findUnique({
       where: { id: variantId },
       include: { product: true },
@@ -28,7 +28,19 @@ export class CartProductsService {
       throw new NotFoundException(`Variant with ID ${variantId} not found`);
     }
 
-    let cart = await this.cartsService.getUserCart(userId);
+    let cart;
+
+    if (cartId) {
+      cart = await this.prismaService.cart.findUnique({
+        where: { id: cartId },
+      });
+
+      if (cart && cart.userId !== userId) {
+        throw new ForbiddenException(
+          'This cart does not belong to the current user',
+        );
+      }
+    }
 
     if (!cart) {
       cart = await this.prismaService.cart.create({
@@ -50,43 +62,27 @@ export class CartProductsService {
       },
     });
 
-    return {
+    return plainToInstance(CartProductDto, {
       ...cartProduct,
       variant: {
         ...cartProduct.variant,
-        size: cartProduct.variant.size as SizeEnum,
         product: {
           ...cartProduct.variant.product,
-          gender: cartProduct.variant.product.gender as GenderEnum,
-          clothingType: cartProduct.variant.product
-            .clothingType as ClothingTypeEnum,
+          price: cartProduct.variant.product.price.toNumber(),
         },
       },
-    };
+    });
   }
 
-  async removeFromCart(
-    userId: number,
-    cartProductId: number,
-  ): Promise<boolean> {
-    const cart = await this.cartsService.getUserCart(userId);
-
-    if (!cart) {
-      this.logger.error(`Cart from user with id ${userId} not found`);
-      throw NotFoundException;
-    }
-
-    const cartProduct = await this.prismaService.cartProducts.findFirst({
-      where: {
-        id: cartProductId,
-        cartId: cart.id,
-      },
+  async removeFromCart(cartProductId: number): Promise<boolean> {
+    const cartProduct = await this.prismaService.cartProducts.findUnique({
+      where: { id: cartProductId },
     });
 
     if (!cartProduct) {
       this.logger.error(`Cart product with ID ${cartProductId} not found`);
       throw new NotFoundException(
-        `Cart item with ID ${cartProductId} not found in your cart`,
+        `Cart item with ID ${cartProductId} not found`,
       );
     }
 
@@ -97,17 +93,20 @@ export class CartProductsService {
     return true;
   }
 
-  async clearCart(userId: number): Promise<boolean> {
-    const cart = await this.cartsService.getUserCart(userId);
+  async clearCart(cartId: number): Promise<boolean> {
+    const cart = await this.prismaService.cart.findUnique({
+      where: { id: cartId },
+    });
 
     if (!cart) {
-      this.logger.error(`Cart from user with id ${userId} not found`);
+      this.logger.error(`Cart with id ${cartId} not found`);
       throw NotFoundException;
     }
 
     await this.prismaService.cartProducts.deleteMany({
       where: { cartId: cart.id },
     });
+
     return true;
   }
 }

@@ -1,15 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import { CartEntity } from '../entities/cart.entity';
-import { SizeEnum } from '../../variants/enums/size.enum';
-import { GenderEnum } from '../../products/enums/gender.enum';
-import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
+import { plainToInstance } from 'class-transformer';
+import { CartDto } from '../dtos/cart.dto';
 
 @Injectable()
 export class CartsService {
+  private readonly logger = new Logger(CartsService.name);
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUserCart(userId: number): Promise<CartEntity | null> {
+  async getUserLastCart(userId: number): Promise<CartDto | null> {
     const cart = await this.prismaService.cart.findFirst({
       where: { userId },
       include: {
@@ -27,24 +26,22 @@ export class CartsService {
     });
 
     if (!cart) {
-      return null;
+      this.logger.error(`User has no carts`);
+      throw new NotFoundException('User has no carts');
     }
 
-    return {
+    return plainToInstance(CartDto, {
       ...cart,
       cartProducts: cart.cartProducts.map((cartProduct) => ({
         ...cartProduct,
         variant: {
           ...cartProduct.variant,
-          size: cartProduct.variant.size as SizeEnum,
           product: {
             ...cartProduct.variant.product,
-            gender: cartProduct.variant.product.gender as GenderEnum,
-            clothingType: cartProduct.variant.product
-              .clothingType as ClothingTypeEnum,
+            price: cartProduct.variant.product.price.toNumber(),
           },
         },
       })),
-    };
+    });
   }
 }

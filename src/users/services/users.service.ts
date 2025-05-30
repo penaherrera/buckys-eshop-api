@@ -11,6 +11,8 @@ import { CreateUserDto } from '../dtos/requests/create-user.dto';
 import { genSalt, hash } from 'bcryptjs';
 import { UserEntity } from '../entities/user.entity';
 import { UpdateUserInput } from '../dtos/requests/update-user.input';
+import { UserDto } from '../dtos/responses/user.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -71,7 +73,7 @@ export class UsersService {
   async update(
     userId: number,
     updateUserInput: UpdateUserInput,
-  ): Promise<Omit<UserEntity, 'role'>> {
+  ): Promise<UserDto> {
     const existingUser = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
@@ -87,7 +89,7 @@ export class UsersService {
     });
 
     this.logger.log(`User updated successfully`);
-    return updatedUser;
+    return plainToInstance(UserDto, updatedUser);
   }
 
   async bcryptPassword(password: string): Promise<string> {

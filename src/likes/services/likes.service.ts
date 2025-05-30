@@ -4,29 +4,33 @@ import { LikeEntity } from '../entities/like.entity';
 import { ProductEntity } from '../../products/entities/product.entity';
 import { GenderEnum } from '../../products/enums/gender.enum';
 import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
+import { plainToInstance } from 'class-transformer';
+import { LikeDto } from '../dtos/like.dto';
+import { ProductDto } from 'src/products/dtos/responses/product.dto';
 
 @Injectable()
 export class LikesService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUserLikes(userId: number): Promise<ProductEntity[] | null> {
+  async getUserLikes(userId: number): Promise<ProductDto[] | null> {
     const likes = await this.prismaService.like.findMany({
       where: { userId: userId },
       orderBy: { createdAt: 'desc' },
       include: { product: true },
     });
 
-    return likes.map((like) => ({
-      ...like.product,
-      gender: like.product.gender as GenderEnum,
-      clothingType: like.product.clothingType as ClothingTypeEnum,
-    }));
+    if (!likes || likes.length === 0) {
+      return null;
+    }
+
+    return likes.map((like) =>
+      plainToInstance(ProductDto, {
+        ...like.product,
+      }),
+    );
   }
 
-  async toggleLike(
-    userId: number,
-    productId: number,
-  ): Promise<LikeEntity | null> {
+  async toggleLike(userId: number, productId: number): Promise<LikeDto | null> {
     const product = await this.prismaService.product.findUnique({
       where: { id: productId },
     });
@@ -56,7 +60,7 @@ export class LikesService {
         },
       });
 
-      return newLike;
+      return plainToInstance(LikeDto, newLike);
     }
   }
 }

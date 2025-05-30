@@ -11,14 +11,17 @@ export class UpdateUserInput {
   firstName?: string;
 
   @IsString()
+  @IsOptional()
   @Field(() => String, { nullable: true, description: 'Last name of the user' })
   lastName?: string;
 
   @IsString()
+  @IsOptional()
   @Field(() => String, { nullable: true, description: 'Address of the user' })
   address?: string;
 
   @IsString()
+  @IsOptional()
   @IsPhoneNumber()
   @Field(() => String, {
     nullable: true,
@@ -27,6 +30,7 @@ export class UpdateUserInput {
   phoneNumber?: string;
 
   @IsEmail()
+  @IsOptional()
   @IsString()
   @Field(() => String, {
     nullable: true,

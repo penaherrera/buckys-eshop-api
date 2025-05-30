@@ -2,11 +2,10 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateProductInput } from '../dtos/create-product.input';
 import { UpdateProductInput } from '../dtos/update-product.input';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import { GenderEnum } from '../enums/gender.enum';
-import { ProductEntity } from '../entities/product.entity';
-import { ClothingTypeEnum } from '../enums/clothing-type.enum';
 import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.inputs';
 import { VariantsService } from '../../variants/services/variants.service';
+import { plainToInstance } from 'class-transformer';
+import { ProductDto } from '../dtos/responses/product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -19,7 +18,7 @@ export class ProductsService {
 
   async createWithVariants(
     createProductWithVariantsInput: CreateProductWithVariantsInput,
-  ): Promise<ProductEntity> {
+  ): Promise<ProductDto> {
     const product = await this.create(createProductWithVariantsInput.product);
 
     await this.variantsService.createMany({
@@ -27,10 +26,10 @@ export class ProductsService {
       variants: createProductWithVariantsInput.variants,
     });
 
-    return product;
+    return plainToInstance(ProductDto, product);
   }
 
-  async create(createProductInput: CreateProductInput): Promise<ProductEntity> {
+  async create(createProductInput: CreateProductInput): Promise<ProductDto> {
     await this.verifyIdsExist(createProductInput);
 
     const product = await this.prismaService.product.create({
@@ -41,34 +40,27 @@ export class ProductsService {
 
     this.logger.log('Product created successfully');
 
-    return {
-      ...product,
-      gender: product.gender as GenderEnum,
-      clothingType: product.clothingType as ClothingTypeEnum,
-    };
+    return plainToInstance(ProductDto, product);
   }
 
-  async findAll(): Promise<ProductEntity[]> {
+  async findAll(): Promise<ProductDto[]> {
     const products = await this.prismaService.product.findMany({
       where: { isActive: true },
       orderBy: { createdAt: 'desc' },
     });
 
-    return products.map((product) => ({
+    const processedProducts = products.map((product) => ({
       ...product,
-      gender: product.gender as GenderEnum,
-      clothingType: product.clothingType as ClothingTypeEnum,
+      price: product.price.toNumber(),
     }));
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+    return plainToInstance(ProductDto, processedProducts);
   }
 
   async update(
     id: number,
     updateProductInput: UpdateProductInput,
-  ): Promise<ProductEntity> {
+  ): Promise<ProductDto> {
     const existingProduct = await this.prismaService.product.findUnique({
       where: { id },
     });
@@ -89,14 +81,10 @@ export class ProductsService {
 
     this.logger.log(`Product with ID ${id} updated successfully`);
 
-    return {
-      ...updatedProduct,
-      gender: updatedProduct.gender as GenderEnum,
-      clothingType: updatedProduct.clothingType as ClothingTypeEnum,
-    };
+    return plainToInstance(ProductDto, updatedProduct);
   }
 
-  async remove(id: number): Promise<ProductEntity> {
+  async remove(id: number): Promise<ProductDto> {
     const existingProduct = await this.prismaService.product.findUnique({
       where: { id },
     });
@@ -114,14 +102,10 @@ export class ProductsService {
 
     this.logger.log(`Product with ID ${id} permanently deleted`);
 
-    return {
-      ...deletedProduct,
-      gender: deletedProduct.gender as GenderEnum,
-      clothingType: deletedProduct.clothingType as ClothingTypeEnum,
-    };
+    return plainToInstance(ProductDto, deletedProduct);
   }
 
-  async toggleActive(id: number): Promise<ProductEntity> {
+  async toggleActive(id: number): Promise<ProductDto> {
     const existingProduct = await this.prismaService.product.findUnique({
       where: { id },
     });
@@ -144,11 +128,7 @@ export class ProductsService {
       `Product with ID ${id} toggled active status to ${updatedProduct.isActive}`,
     );
 
-    return {
-      ...updatedProduct,
-      gender: updatedProduct.gender as GenderEnum,
-      clothingType: updatedProduct.clothingType as ClothingTypeEnum,
-    };
+    return plainToInstance(ProductDto, updatedProduct);
   }
 
   private async verifyIdsExist(
