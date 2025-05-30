@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { VariantEntity } from '../entities/variant.entity';
 import { SizeEnum } from '../enums/size.enum';
@@ -50,9 +50,40 @@ export class VariantsService {
   }
 
   async removeAllByProductId(productId: number): Promise<void> {
-    await this.prismaService.variant.deleteMany({
-      where: { productId },
+    const existingOrder = await this.prismaService.order.findFirst({
+      where: {
+        cart: {
+          cartProducts: {
+            some: {
+              variant: {
+                productId: productId,
+              },
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
     });
-    this.logger.log(`All variants for product ${productId} deleted`);
+
+    if (existingOrder) {
+      this.logger.error(
+        `Cannot delete product with ID ${productId} because it has variants associated with existing orders`,
+      );
+      throw new ConflictException(
+        `Cannot delete product with ID ${productId} because it has variants associated with existing orders`,
+      );
+    }
+
+    await this.prismaService.variant.deleteMany({
+      where: {
+        productId: productId,
+      },
+    });
+
+    this.logger.log(
+      `All variants for product with ID ${productId} deleted successfully`,
+    );
   }
 }

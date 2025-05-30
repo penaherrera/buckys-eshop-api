@@ -14,7 +14,11 @@ import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filt
 export class CartProductsResolver {
   constructor(private readonly cartProductsService: CartProductsService) {}
 
-  @Mutation(() => CartProductEntity, { name: 'addToCart' })
+  @Mutation(() => CartProductEntity, {
+    name: 'addToCart',
+    description:
+      'Adds product to shopping cart (creates new cart if none exists). Accepts optional cartId for specific cart selection.',
+  })
   addToCart(
     @GetUser() user: UserEntity,
     @Args('variantId', { type: () => Int }) variantId: number,
@@ -23,14 +27,20 @@ export class CartProductsResolver {
     return this.cartProductsService.addToCart(user.id, variantId, cartId);
   }
 
-  @Mutation(() => Boolean, { name: 'removeFromCart' })
+  @Mutation(() => Boolean, {
+    name: 'removeFromCart',
+    description: 'Remove a product from a cart',
+  })
   removeFromCart(
     @Args('cartProductId', { type: () => Int }) cartProductId: number,
   ) {
     return this.cartProductsService.removeFromCart(cartProductId);
   }
 
-  @Mutation(() => Boolean, { name: 'clearCart' })
+  @Mutation(() => Boolean, {
+    name: 'clearCart',
+    description: 'Remove all items from a cart',
+  })
   clearCart(@Args('cartId', { type: () => Int }) cartId: number) {
     return this.cartProductsService.clearCart(cartId);
   }

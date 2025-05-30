@@ -1,9 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import { LikeEntity } from '../entities/like.entity';
-import { ProductEntity } from '../../products/entities/product.entity';
-import { GenderEnum } from '../../products/enums/gender.enum';
-import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
 import { plainToInstance } from 'class-transformer';
 import { LikeDto } from '../dtos/like.dto';
 import { ProductDto } from 'src/products/dtos/responses/product.dto';
@@ -16,7 +12,7 @@ export class LikesService {
     const likes = await this.prismaService.like.findMany({
       where: { userId: userId },
       orderBy: { createdAt: 'desc' },
-      include: { product: true },
+      select: { product: true },
     });
 
     if (!likes || likes.length === 0) {

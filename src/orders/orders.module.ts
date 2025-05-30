@@ -5,5 +5,6 @@ import { OrdersResolver } from './orders.resolver';
 
 @Module({
   providers: [OrdersService, OrdersResolver, PrismaService],
+  exports: [OrdersService],
 })
 export class OrdersModule {}

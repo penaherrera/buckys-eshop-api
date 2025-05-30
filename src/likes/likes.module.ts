@@ -5,5 +5,6 @@ import { PrismaService } from '../common/prisma/prisma.service';
 
 @Module({
   providers: [LikesService, LikesResolver, PrismaService],
+  exports: [LikesService],
 })
 export class LikesModule {}

@@ -6,13 +6,12 @@ import {
   registerEnumType,
   Float,
 } from '@nestjs/graphql';
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { BrandDto } from '../../../brands/dtos/brand.dto';
 import { CategoryDto } from '../../../categories/dtos/category.dto';
 import { ClothingTypeEnum } from '../../../products/enums/clothing-type.enum';
 import { GenderEnum } from '../../../products/enums/gender.enum';
 import { VariantDto } from '../../../variants/dtos/responses/variant.dto';
-import { Decimal } from '@prisma/client/runtime/library';
 
 registerEnumType(GenderEnum, {
   name: 'GenderEnum',
@@ -53,6 +52,7 @@ export class ProductDto {
   description: string;
 
   @Field(() => Number)
+  @Type(() => Number)
   @Expose()
   price: number;
 

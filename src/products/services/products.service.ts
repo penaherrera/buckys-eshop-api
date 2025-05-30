@@ -43,18 +43,16 @@ export class ProductsService {
     return plainToInstance(ProductDto, product);
   }
 
-  async findAll(): Promise<ProductDto[]> {
+  async findAll(categoryId?: number): Promise<ProductDto[]> {
     const products = await this.prismaService.product.findMany({
-      where: { isActive: true },
+      where: {
+        isActive: true,
+        ...(categoryId && { categoryId }),
+      },
       orderBy: { createdAt: 'desc' },
     });
 
-    const processedProducts = products.map((product) => ({
-      ...product,
-      price: product.price.toNumber(),
-    }));
-
-    return plainToInstance(ProductDto, processedProducts);
+    return plainToInstance(ProductDto, products);
   }
 
   async update(
@@ -84,7 +82,7 @@ export class ProductsService {
     return plainToInstance(ProductDto, updatedProduct);
   }
 
-  async remove(id: number): Promise<ProductDto> {
+  async remove(id: number): Promise<boolean> {
     const existingProduct = await this.prismaService.product.findUnique({
       where: { id },
     });
@@ -96,13 +94,12 @@ export class ProductsService {
 
     await this.variantsService.removeAllByProductId(id);
 
-    const deletedProduct = await this.prismaService.product.delete({
+    await this.prismaService.product.delete({
       where: { id },
     });
 
     this.logger.log(`Product with ID ${id} permanently deleted`);
-
-    return plainToInstance(ProductDto, deletedProduct);
+    return true;
   }
 
   async toggleActive(id: number): Promise<ProductDto> {

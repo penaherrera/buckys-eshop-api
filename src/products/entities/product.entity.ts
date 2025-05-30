@@ -1,6 +1,5 @@
 import {
   Field,
-  Float,
   GraphQLISODateTime,
   ID,
   ObjectType,
@@ -13,6 +12,7 @@ import { VariantEntity } from '../../variants/entities/variant.entity';
 import { Decimal } from '@prisma/client/runtime/library';
 import { GenderEnum } from '../enums/gender.enum';
 import { ClothingTypeEnum } from '../enums/clothing-type.enum';
+import { Type } from 'class-transformer';
 
 registerEnumType(GenderEnum, {
   name: 'GenderEnum',
@@ -45,6 +45,7 @@ export class ProductEntity implements Product {
   readonly description: string;
 
   @Field(() => Number)
+  @Type(() => Number)
   readonly price: Decimal;
 
   @Field(() => GenderEnum)

@@ -16,13 +16,12 @@ import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filt
 export class LikesResolver {
   constructor(private readonly likesService: LikesService) {}
 
-  @Query(() => [ProductEntity], { name: 'userLikes' })
-  getUserLikes(@GetUser() user: UserEntity): Promise<ProductDto[] | null> {
-    return this.likesService.getUserLikes(user.id);
-  }
-
-  @Mutation(() => LikeEntity, { nullable: true, name: 'toggleLike' })
   @UseGuards(JwtAuthGuard)
+  @Mutation(() => LikeEntity, {
+    nullable: true,
+    name: 'toggleLike',
+    description: "Adds or removes a user's like from a product.",
+  })
   toggleLike(
     @GetUser() user: UserEntity,
     @Args('productId', { type: () => Int }) productId: number,

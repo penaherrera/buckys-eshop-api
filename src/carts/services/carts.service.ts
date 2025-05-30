@@ -21,7 +21,7 @@ export class CartsService {
         },
       },
       orderBy: {
-        updatedAt: 'desc',
+        updatedAt: 'asc',
       },
     });
 

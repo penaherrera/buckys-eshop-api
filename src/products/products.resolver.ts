@@ -28,7 +28,10 @@ export class ProductsResolver {
   constructor(private readonly productsService: ProductsService) {}
 
   @UseGuards(JwtAuthGuard, AdminGuard)
-  @Mutation(() => ProductEntity, { name: 'createProductWithVariants' })
+  @Mutation(() => ProductEntity, {
+    name: 'createProductWithVariants',
+    description: 'Admin Mutation: Create product with nested variants',
+  })
   createProduct(
     @Args('createProductWithVariantsInput')
     createProductWithVariantsInput: CreateProductWithVariantsInput,
@@ -38,9 +41,15 @@ export class ProductsResolver {
     );
   }
 
-  @Query(() => [ProductEntity], { name: 'products' })
-  findAll(): Promise<ProductDto[]> {
-    return this.productsService.findAll();
+  @Query(() => [ProductEntity], {
+    name: 'allProducts',
+    description: 'Get all active products, no JWT required',
+  })
+  findAll(
+    @Args('categoryId', { type: () => Int, nullable: true })
+    categoryId?: number,
+  ): Promise<ProductDto[]> {
+    return this.productsService.findAll(categoryId);
   }
 
   @ResolveField('category', () => CategoryEntity)
@@ -68,18 +77,23 @@ export class ProductsResolver {
   }
 
   @UseGuards(JwtAuthGuard, AdminGuard)
-  @Mutation(() => ProductEntity, { name: 'updateProduct' })
+  @Mutation(() => ProductEntity, {
+    name: 'updateProduct',
+    description: 'Admin Mutation: Update product info',
+  })
   updateProduct(
+    @Args('productId') productId: number,
     @Args('updateProductInput') updateProductInput: UpdateProductInput,
   ) {
-    return this.productsService.update(
-      updateProductInput.id,
-      updateProductInput,
-    );
+    return this.productsService.update(productId, updateProductInput);
   }
 
   @UseGuards(JwtAuthGuard, AdminGuard)
-  @Mutation(() => ProductEntity, { name: 'toggleProductActive' })
+  @Mutation(() => ProductEntity, {
+    name: 'toggleProductActive',
+    description:
+      'Admin Mutation: Toggles the active status of a product (active/inactive)',
+  })
   toggleProductActive(
     @Args('id', { type: () => Int }) id: number,
   ): Promise<ProductDto> {
@@ -87,10 +101,13 @@ export class ProductsResolver {
   }
 
   @UseGuards(JwtAuthGuard, AdminGuard)
-  @Mutation(() => ProductEntity, { name: 'removeProduct' })
-  removeProduct(
+  @Mutation(() => Boolean, {
+    name: 'deleteProduct',
+    description: 'Admin Mutation: Delete a product with no Orders associated',
+  })
+  async deleteProduct(
     @Args('id', { type: () => Int }) id: number,
-  ): Promise<ProductDto> {
+  ): Promise<boolean | undefined> {
     return this.productsService.remove(id);
   }
 }

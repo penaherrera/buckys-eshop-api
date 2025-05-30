@@ -82,9 +82,15 @@ export class OrdersService {
     const orders = await this.prismaService.order.findMany({
       orderBy: { createdAt: 'desc' },
       include: {
+        transactions: true,
         cart: {
           include: {
             user: true,
+            cartProducts: {
+              include: {
+                variant: { include: { product: true } },
+              },
+            },
           },
         },
       },
@@ -93,6 +99,19 @@ export class OrdersService {
     const transformedOrders = orders.map((order) => ({
       ...order,
       user: order.cart.user,
+      cart: {
+        ...order.cart,
+        cartProducts: order.cart.cartProducts.map((cp) => ({
+          ...cp,
+          variant: {
+            ...cp.variant,
+            product: cp.variant.product && {
+              ...cp.variant.product,
+              price: cp.variant.product.price.toNumber(),
+            },
+          },
+        })),
+      },
     }));
 
     return plainToInstance(OrderDto, transformedOrders);

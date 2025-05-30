@@ -205,12 +205,26 @@ type CartDto {
   cartProducts: [CartProductDto!]
 }
 
-type LikeEntity {
-  id: Int!
-  productId: Int!
-  userId: Int!
+type TransactionEntity {
+  id: ID!
+  orderId: Int!
+  amount: Int!
+  stripeChargeId: String!
+  receiptUrl: String!
+  currency: String!
+  stripeStatus: String!
   createdAt: DateTime!
-  products: [ProductEntity!]
+  order: OrderEntity!
+}
+
+type OrderEntity {
+  id: ID!
+  cartId: Int!
+  status: String!
+  stripePaymentIntendId: String!
+  createdAt: DateTime!
+  cart: CartEntity!
+  transactions: [TransactionEntity!]
 }
 
 type TransactionDto {
@@ -242,50 +256,64 @@ enum StatusEnum {
   CANCELLED
 }
 
-type TransactionEntity {
-  id: ID!
-  orderId: Int!
-  amount: Int!
-  stripeChargeId: String!
-  receiptUrl: String!
-  currency: String!
-  stripeStatus: String!
+type LikeEntity {
+  id: Int!
+  productId: Int!
+  userId: Int!
   createdAt: DateTime!
-  order: OrderEntity!
-}
-
-type OrderEntity {
-  id: ID!
-  cartId: Int!
-  status: String!
-  stripePaymentIntendId: String!
-  createdAt: DateTime!
-  cart: CartEntity!
-  transactions: [TransactionEntity!]
+  products: [ProductEntity!]
 }
 
 type Query {
+  """Get current user information"""
   me: UserEntity!
-  userCart: CartEntity
-  products: [ProductEntity!]!
-  userLikes: [ProductEntity!]!
 
-  """Retrieve orders from current user"""
+  """Get current user last cart"""
+  myCart: CartEntity
+
+  """Get current user likes"""
+  myLikes: [ProductEntity!]!
+
+  """Retrieve current user orders"""
   myOrders: [OrderEntity!]!
+
+  """Get all active products, no JWT required"""
+  allProducts(categoryId: Int): [ProductEntity!]!
 
   """Admin Query: retrieve all existing orders"""
   allOrders: [OrderEntity!]!
 }
 
 type Mutation {
-  UpdateUser(updateUserInput: UpdateUserInput!): UserEntity!
+  """Update current user information"""
+  updateUser(updateUserInput: UpdateUserInput!): UserEntity!
+
+  """Admin Mutation: Create product with nested variants"""
   createProductWithVariants(createProductWithVariantsInput: CreateProductWithVariantsInput!): ProductEntity!
-  updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
+
+  """Admin Mutation: Update product info"""
+  updateProduct(productId: Float!, updateProductInput: UpdateProductInput!): ProductEntity!
+
+  """
+  Admin Mutation: Toggles the active status of a product (active/inactive)
+  """
   toggleProductActive(id: Int!): ProductEntity!
-  removeProduct(id: Int!): ProductEntity!
+
+  """Admin Mutation: Delete a product with no Orders associated"""
+  deleteProduct(id: Int!): Boolean!
+
+  """Adds or removes a user's like from a product."""
   toggleLike(productId: Int!): LikeEntity
+
+  """
+  Adds product to shopping cart (creates new cart if none exists). Accepts optional cartId for specific cart selection.
+  """
   addToCart(variantId: Int!, cartId: Int): CartProductEntity!
+
+  """Remove a product from a cart"""
   removeFromCart(cartProductId: Int!): Boolean!
+
+  """Remove all items from a cart"""
   clearCart(cartId: Int!): Boolean!
 }
 
@@ -382,5 +410,4 @@ input UpdateProductInput {
 
   """Product gender"""
   gender: GenderEnum = UNISEX
-  id: Int!
 }
