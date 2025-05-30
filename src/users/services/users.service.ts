@@ -80,7 +80,7 @@ export class UsersService {
 
     if (!existingUser) {
       this.logger.warn(`User with ID ${userId} not found`);
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const updatedUser = await this.prismaService.user.update({

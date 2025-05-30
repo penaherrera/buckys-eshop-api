@@ -1,12 +1,14 @@
 import { Args, Int, Mutation, Resolver, Query } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UseFilters, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CartProductsService } from './services/cart-products.service';
 import { GetUser } from '../users/decorators/get-user.decorator';
 import { UserEntity } from '../users/entities/user.entity';
 import { CartProductEntity } from './entities/cart-product.entity';
 import { CartProductDto } from './dtos/cart-product.dto';
+import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
 
+@UseFilters(GraphQlExceptionFilter)
 @UseGuards(JwtAuthGuard)
 @Resolver(() => CartProductEntity)
 export class CartProductsResolver {

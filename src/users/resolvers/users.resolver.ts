@@ -1,7 +1,7 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserEntity } from '../entities/user.entity';
 import { UsersService } from '../services/users.service';
-import { UseGuards } from '@nestjs/common';
+import { UseFilters, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { GetUser } from '../decorators/get-user.decorator';
 import { UpdateUserInput } from '../dtos/requests/update-user.input';
@@ -9,7 +9,9 @@ import { UserDto } from '../dtos/responses/user.dto';
 import { CartEntity } from '../../carts/entities/cart.entity';
 import { CartDto } from '../../carts/dtos/cart.dto';
 import { CartsService } from '../../carts/services/carts.service';
+import { GraphQlExceptionFilter } from '../../common/filters/graphql-exception.filter';
 
+@UseFilters(GraphQlExceptionFilter)
 @UseGuards(JwtAuthGuard)
 @Resolver(() => UserEntity)
 export class UsersResolver {

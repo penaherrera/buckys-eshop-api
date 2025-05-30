@@ -5,6 +5,7 @@ import {
   Request,
   Body,
   Patch,
+  UseFilters,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { PassportLocalGuard } from '../guards/passport-local.guard';
@@ -13,7 +14,9 @@ import { JwtResponseDto } from '../dtos/responses/jwt-response.dto';
 import { ResetPasswordDto } from '../../auth/dtos/requests/reset-password.dto';
 import { EmailDto } from '../dtos/requests/email.dto';
 import { PasswordService } from '../services/password.service';
+import { HttpExceptionFilter } from '../../common/filters/http-exception.filter';
 
+@UseFilters(HttpExceptionFilter)
 @Controller('auth')
 export class AuthController {
   constructor(

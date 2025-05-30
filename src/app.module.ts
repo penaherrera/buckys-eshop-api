@@ -19,9 +19,15 @@ import { CartProductsModule } from './cart-products/cart-products.module';
 import { PaymentsModule } from './payments/payments.module';
 import { OrdersModule } from './orders/orders.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { ConfigModule } from '@nestjs/config';
+import { validate } from './env.validation';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      validate,
+      isGlobal: true,
+    }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       imports: [DataloaderModule],

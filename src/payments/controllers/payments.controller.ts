@@ -1,9 +1,17 @@
-import { Body, Controller, Post, RawBodyRequest, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  RawBodyRequest,
+  Req,
+  UseFilters,
+} from '@nestjs/common';
 import { PaymentsService } from '../services/payments.service';
 import { CheckoutDto } from '../dtos/checkout.dto';
 import { Headers } from '@nestjs/common';
-import Stripe from 'stripe';
+import { HttpExceptionFilter } from '../../common/filters/http-exception.filter';
 
+@UseFilters(HttpExceptionFilter)
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
