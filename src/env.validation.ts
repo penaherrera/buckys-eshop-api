@@ -24,7 +24,16 @@ class EnvironmentVariables {
   STRIPE_SECRET_KEY: string;
 
   @IsString()
-  STRIPE_WEBHOOK: string;
+  CLOUDINARY_CLOUD_NAME: string;
+
+  @IsString()
+  CLOUDINARY_API_KEY: string;
+
+  @IsString()
+  CLOUDINARY_API_SECRET: string;
+  
+  @IsString()
+  CLOUDINARY_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {

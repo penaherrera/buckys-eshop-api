@@ -86,6 +86,7 @@ type ProductEntity {
   updatedAt: DateTime!
   deletedAt: DateTime
   variants: [VariantEntity!]!
+  imageSecureUrl: String
 }
 
 enum GenderEnum {
@@ -174,6 +175,7 @@ type ProductDto {
   updatedAt: DateTime!
   deletedAt: DateTime
   variants: [VariantDto!]
+  imageSecureUrl: String
 }
 
 type VariantDto {
@@ -272,7 +274,7 @@ type Query {
   myCart: CartEntity
 
   """Get current user likes"""
-  myLikes: [ProductEntity!]!
+  myLikes: [ProductEntity!]
 
   """Retrieve current user orders"""
   myOrders: [OrderEntity!]!

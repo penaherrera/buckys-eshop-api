@@ -5,6 +5,7 @@ import { PrismaService } from '../common/prisma/prisma.service';
 import { CategoriesService } from '../categories/services/categories.service';
 import { BrandsService } from '../brands/services/brands.service';
 import { VariantsService } from '../variants/services/variants.service';
+import { LikesService } from '../likes/services/likes.service';
 
 @Module({
   providers: [
@@ -14,6 +15,7 @@ import { VariantsService } from '../variants/services/variants.service';
     CategoriesService,
     BrandsService,
     VariantsService,
+    LikesService,
   ],
 })
 export class ProductsModule {}

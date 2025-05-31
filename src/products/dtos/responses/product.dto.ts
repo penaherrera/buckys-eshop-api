@@ -87,4 +87,8 @@ export class ProductDto {
   @Field(() => [VariantDto], { nullable: true })
   @Expose()
   variants?: VariantDto[];
+
+  @Field(() => String, { nullable: true })
+  @Expose()
+  imageSecureUrl?: String | null;
 }

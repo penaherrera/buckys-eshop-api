@@ -12,7 +12,7 @@ import { VariantEntity } from '../../variants/entities/variant.entity';
 import { Decimal } from '@prisma/client/runtime/library';
 import { GenderEnum } from '../enums/gender.enum';
 import { ClothingTypeEnum } from '../enums/clothing-type.enum';
-import { Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 registerEnumType(GenderEnum, {
   name: 'GenderEnum',
@@ -71,4 +71,8 @@ export class ProductEntity implements Product {
 
   @Field(() => [VariantEntity], { nullable: true })
   readonly variants?: VariantEntity[];
+
+  @Field(() => String, { nullable: true })
+  @Expose()
+  imageSecureUrl: string | null;
 }

@@ -21,6 +21,8 @@ import { OrdersModule } from './orders/orders.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './env.validation';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { validate } from './env.validation';
     PaymentsModule,
     OrdersModule,
     TransactionsModule,
+    CloudinaryModule,
+    ImagesModule,
   ],
   controllers: [AuthController],
 })

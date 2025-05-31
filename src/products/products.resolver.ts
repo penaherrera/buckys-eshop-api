@@ -21,7 +21,6 @@ import { VariantEntity } from '../variants/entities/variant.entity';
 import { CreateProductWithVariantsInput } from './dtos/create-product-variants.inputs';
 import { ProductDto } from './dtos/responses/product.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
-
 @UseFilters(GraphQlExceptionFilter)
 @Resolver(() => ProductEntity)
 export class ProductsResolver {

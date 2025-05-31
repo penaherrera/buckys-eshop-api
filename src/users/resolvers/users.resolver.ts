@@ -48,6 +48,7 @@ export class UsersResolver {
   @Query(() => [ProductEntity], {
     name: 'myLikes',
     description: 'Get current user likes',
+    nullable: true,
   })
   getUserLikes(@GetUser() user: UserEntity): Promise<ProductDto[] | null> {
     return this.likesService.getUserLikes(user.id);

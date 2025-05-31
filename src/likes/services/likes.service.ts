@@ -10,7 +10,7 @@ export class LikesService {
 
   async getUserLikes(userId: number): Promise<ProductDto[] | null> {
     const likes = await this.prismaService.like.findMany({
-      where: { userId: userId },
+      where: { userId },
       orderBy: { createdAt: 'desc' },
       select: { product: true },
     });
