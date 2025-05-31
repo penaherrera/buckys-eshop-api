@@ -258,6 +258,20 @@ enum StatusEnum {
   CANCELLED
 }
 
+type PaginationMetadata {
+  perPage: Int!
+  total: Int!
+  page: Int!
+  totalPages: Int!
+  prevPage: Int
+  nextPage: Int
+}
+
+type PaginatedProductsDto {
+  data: [ProductDto!]!
+  meta: PaginationMetadata!
+}
+
 type LikeEntity {
   id: Int!
   productId: Int!
@@ -279,8 +293,8 @@ type Query {
   """Retrieve current user orders"""
   myOrders: [OrderEntity!]!
 
-  """Get all active products, no JWT required"""
-  allProducts(categoryId: Int): [ProductEntity!]!
+  """Get all active products with pagination, no JWT required"""
+  allProducts(page: Int = 1, perPage: Int = 10, categoryId: Int): PaginatedProductsDto!
 
   """Admin Query: retrieve all existing orders"""
   allOrders: [OrderEntity!]!

@@ -6,6 +6,12 @@ import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.
 import { VariantsService } from '../../variants/services/variants.service';
 import { plainToInstance } from 'class-transformer';
 import { ProductDto } from '../dtos/responses/product.dto';
+import { PaginationArgs } from '../../common/pagination/dtos/pagination.dto';
+import { PaginatedProductsDto } from '../dtos/responses/paginated-product.dto';
+import {
+  calculatePagination,
+  paginationMetadata,
+} from '../../common/pagination/pagination';
 
 @Injectable()
 export class ProductsService {
@@ -43,16 +49,44 @@ export class ProductsService {
     return plainToInstance(ProductDto, product);
   }
 
-  async findAll(categoryId?: number): Promise<ProductDto[]> {
-    const products = await this.prismaService.product.findMany({
-      where: {
-        isActive: true,
-        ...(categoryId && { categoryId }),
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAll(args: PaginationArgs): Promise<PaginatedProductsDto> {
+    const { page = 1, perPage = 10, categoryId } = args;
 
-    return plainToInstance(ProductDto, products);
+    const validPage = Math.max(1, page);
+    const validPerPage = Math.min(Math.max(1, perPage), 100);
+
+    const { skip, take } = calculatePagination(validPage, validPerPage);
+
+    const whereConditions = {
+      isActive: true,
+      ...(categoryId && { categoryId }),
+    };
+
+    const [products, total] = await Promise.all([
+      this.prismaService.product.findMany({
+        where: whereConditions,
+        skip,
+        take,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          category: true,
+          brand: true,
+          variants: true,
+        },
+      }),
+      this.prismaService.product.count({
+        where: whereConditions,
+      }),
+    ]);
+
+    const productDtos = plainToInstance(ProductDto, products);
+
+    const meta = paginationMetadata(validPage, validPerPage, total);
+
+    return {
+      data: productDtos,
+      meta,
+    };
   }
 
   async update(

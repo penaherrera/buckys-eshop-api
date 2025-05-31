@@ -21,6 +21,8 @@ import { VariantEntity } from '../variants/entities/variant.entity';
 import { CreateProductWithVariantsInput } from './dtos/create-product-variants.inputs';
 import { ProductDto } from './dtos/responses/product.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
+import { PaginatedProductsDto } from './dtos/responses/paginated-product.dto';
+import { PaginationArgs } from '../common/pagination/dtos/pagination.dto';
 @UseFilters(GraphQlExceptionFilter)
 @Resolver(() => ProductEntity)
 export class ProductsResolver {
@@ -39,16 +41,14 @@ export class ProductsResolver {
       createProductWithVariantsInput,
     );
   }
-
-  @Query(() => [ProductEntity], {
+  @Query(() => PaginatedProductsDto, {
     name: 'allProducts',
-    description: 'Get all active products, no JWT required',
+    description: 'Get all active products with pagination, no JWT required',
   })
-  findAll(
-    @Args('categoryId', { type: () => Int, nullable: true })
-    categoryId?: number,
-  ): Promise<ProductDto[]> {
-    return this.productsService.findAll(categoryId);
+  async findAll(
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<PaginatedProductsDto> {
+    return this.productsService.findAll(paginationArgs);
   }
 
   @ResolveField('category', () => CategoryEntity)
