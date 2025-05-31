@@ -23,7 +23,32 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Bucky's Eshop API** 🛒👕  
+
+
+
+A robust e-commerce backend solution built with NestJS and GraphQL, designed specifically for clothing retailers. This API powers a complete online store platform with comprehensive features for product catalog management, order processing, customer accounts, and secure transactions. 
+
+The system efficiently handles all core e-commerce operations while providing the flexibility of GraphQL for data retrieval and the reliability of REST for specific services.
+
+
+### Key Features:
+- **GraphQL API** 🌐 for flexible data queries
+- **Stripe Integration** 💰 with webhook management
+- **CRUD Operations** 🛠️ for Products and Users
+- **User Authentication** 🔑 system using REST
+- **Image Handling** 🖼️ with Cloudinary
+- **Email Service** ✉️ via SendGrid
+
+### Integrated Services:
+- **Payments**: Stripe API
+- **Image Storage**: Cloudinary
+- **Email Service**: SendGrid
+
+> 💡 **Note**: No local database setup required - already deployed in the cloud! ☁️
+
+## GraphQL Documentation
+Explore the GraphQL schema and queries in our [API Documentation](https://studio.apollographql.com/org/carlos-penas-team-3/graphs) (link to be added)
 
 ## Project setup
 
@@ -39,7 +64,4 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-
-## Features:
 
