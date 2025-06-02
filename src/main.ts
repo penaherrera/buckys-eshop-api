@@ -36,12 +36,14 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  const port = process.env.NODE_PORT || '';
+
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
 
-  await app.listen(3000);
+  await app.listen(port);
 
   logger.log(`Application running on port 3000`);
 }

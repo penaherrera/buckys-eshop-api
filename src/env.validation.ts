@@ -31,9 +31,12 @@ class EnvironmentVariables {
 
   @IsString()
   CLOUDINARY_API_SECRET: string;
-  
+
   @IsString()
   CLOUDINARY_URL: string;
+
+  @IsString()
+  NODE_PORT: string;
 }
 
 export function validate(config: Record<string, unknown>) {
