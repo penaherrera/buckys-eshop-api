@@ -48,10 +48,39 @@ The system efficiently handles all core e-commerce operations while providing th
 > 💡 **Note**: No local database setup required - already deployed in the cloud! ☁️
 
 ## GraphQL Documentation
-Explore the GraphQL schema and queries in our [API Documentation](https://studio.apollographql.com/org/carlos-penas-team-3/graphs) (link to be added)
+Explore the GraphQL schema and queries in our [API Documentation](https://studio.apollographql.com/org/carlos-penas-team-3/graphs)
+
+## Environment Variables Configuration
+
+You must create a `.env` file with the following variables to run the project:
+
+```env
+# Database
+DATABASE_URL=postgres://user:password@host:port/database_name
+
+# Authentication
+JWT_SECRET=your_jwt_secret_key_here
+JWT_EXP=3600  # JWT expiration time in seconds (e.g., 1 hour)
+JWT_EXP_REFRESH=86400  # Refresh token expiration (e.g., 24 hours)
+ADMIN_PASSWORD=your_admin_password_here
+
+# Third-party APIs
+SENDGRID_API_KEY=your_sendgrid_api_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK=your_stripe_webhook_secret
+
+# Cloud Storage (Cloudinary)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
+
+# Server Configuration
+NODE_PORT=3000  # Port where the Node server will run
+```
+
 
 ## Project setup
-
 ```bash
 $ npm install
 ```
