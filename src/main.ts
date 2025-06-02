@@ -36,7 +36,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  const port = process.env.NODE_PORT || '';
+  const port = process.env.NODE_PORT || '3000';
 
   app.enableVersioning({
     type: VersioningType.URI,
@@ -45,6 +45,6 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  logger.log(`Application running on port 3000`);
+  logger.log(`Application running on port ${port}`);
 }
 bootstrap();
