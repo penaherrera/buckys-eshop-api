@@ -8,6 +8,7 @@ import { Decimal } from '@prisma/client/runtime/library';
 import { BrandEntity } from 'src/brands/entities/brand.entity';
 import { CategoryEntity } from 'src/categories/entitites/category.entity';
 import { ProductEntity } from 'src/products/entities/product.entity';
+import { AuthEntity } from 'src/auth/entities/auth.entity';
 
 const now = new Date();
 
@@ -151,3 +152,13 @@ export const categoryProductsMock = [
     category: categoryMock2,
   },
 ];
+
+export const authMock: AuthEntity = {
+  id: 1,
+  jti: '123',
+  userId: 1,
+  refreshToken: '',
+  refreshExpiresAt: now,
+  createdAt: now,
+  user: userMock,
+};

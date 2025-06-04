@@ -11,14 +11,14 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/requests/create-user.dto';
 import { UserDto } from '../dtos/responses/user.dto';
+import { createPrismaMockService } from '../../common/mocks';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let prismaMockService: DeepMockProxy<PrismaClient>;
+  let prismaMockService = createPrismaMockService();
 
   beforeEach(async () => {
-    prismaMockService = mockDeep<PrismaClient>();
-
+    jest.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
