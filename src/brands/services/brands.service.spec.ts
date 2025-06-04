@@ -9,14 +9,13 @@ import {
   brandMock2,
   brandProductsMock,
 } from '../../common/mocks/mock';
+import { createPrismaMockService } from '../../common/mocks';
 
 describe('BrandsService', () => {
   let service: BrandsService;
-  let prismaMockService: DeepMockProxy<PrismaClient>;
+  let prismaMockService = createPrismaMockService();
 
   beforeEach(async () => {
-    prismaMockService = mockDeep<PrismaClient>();
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BrandsService,
