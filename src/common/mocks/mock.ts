@@ -162,3 +162,20 @@ export const authMock: AuthEntity = {
   createdAt: now,
   user: userMock,
 };
+
+export const productMock: ProductEntity = {
+  id: 1,
+  categoryId: 1,
+  brandId: 1,
+  isActive: true,
+  inStock: true,
+  name: 'Sample',
+  description: 'Sample product description',
+  price: new Decimal(100),
+  gender: GenderEnum.UNISEX,
+  clothingType: ClothingTypeEnum.CLOTHING,
+  createdAt: now,
+  updatedAt: now,
+  deletedAt: null,
+  imageSecureUrl: null,
+};
