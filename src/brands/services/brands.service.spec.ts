@@ -32,7 +32,7 @@ describe('BrandsService', () => {
   describe('getAllBrandsByProductIds', () => {
     it('should return brands for all product IDs', async () => {
       const productIds = [1, 2];
-      prismaMockService.product.findMany.mockResolvedValue(brandProductsMock);
+      prismaMockService.product.findMany.mockResolvedValueOnce(brandProductsMock);
 
       const result = await service.getAllBrandsByProductIds(productIds);
 
@@ -52,7 +52,7 @@ describe('BrandsService', () => {
           brand: null,
         },
       ];
-      prismaMockService.product.findMany.mockResolvedValue(
+      prismaMockService.product.findMany.mockResolvedValueOnce(
         productsWithMissingBrand,
       );
 
@@ -68,7 +68,7 @@ describe('BrandsService', () => {
 
     it('should return brands in the same order as requested product IDs', async () => {
       const productIds = [2, 1];
-      prismaMockService.product.findMany.mockResolvedValue(brandProductsMock);
+      prismaMockService.product.findMany.mockResolvedValueOnce(brandProductsMock);
 
       const result = await service.getAllBrandsByProductIds(productIds);
 
@@ -77,7 +77,7 @@ describe('BrandsService', () => {
 
     it('should handle empty product IDs array', async () => {
       const productIds: number[] = [];
-      prismaMockService.product.findMany.mockResolvedValue([]);
+      prismaMockService.product.findMany.mockResolvedValueOnce([]);
 
       const result = await service.getAllBrandsByProductIds(productIds);
 

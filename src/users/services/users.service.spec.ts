@@ -46,7 +46,7 @@ describe('UsersService', () => {
     it('should return an user', async () => {
       const existingUser = userMock;
 
-      prismaMockService.user.findUnique.mockResolvedValue(userMock);
+      prismaMockService.user.findUnique.mockResolvedValueOnce(userMock);
 
       const result = await service.findUserByEmail(userMock.email);
 
@@ -65,7 +65,7 @@ describe('UsersService', () => {
     it('should throw UnauthorizedException if user not found', async () => {
       const nonExistingEmail = 'notanuser@notexisting.com';
 
-      prismaMockService.user.findUnique.mockResolvedValue(null);
+      prismaMockService.user.findUnique.mockResolvedValueOnce(null);
 
       await expect(service.findUserByEmail(nonExistingEmail)).rejects.toThrow(
         UnauthorizedException,
@@ -87,8 +87,8 @@ describe('UsersService', () => {
     const role = roleMock;
 
     it('should create an user', async () => {
-      prismaMockService.user.findUnique.mockResolvedValue(null);
-      prismaMockService.role.findUnique.mockResolvedValue(roleMock);
+      prismaMockService.user.findUnique.mockResolvedValueOnce(null);
+      prismaMockService.role.findUnique.mockResolvedValueOnce(roleMock);
 
       await service.create(params);
 
@@ -113,7 +113,7 @@ describe('UsersService', () => {
     it('should throw ConflictException if user already exists', async () => {
       params.email = 'carlospena@yopmail.com';
 
-      prismaMockService.user.findUnique.mockResolvedValue(userMock);
+      prismaMockService.user.findUnique.mockResolvedValueOnce(userMock);
 
       await expect(service.create(params)).rejects.toThrow(ConflictException);
 
@@ -126,8 +126,8 @@ describe('UsersService', () => {
     });
 
     it('should throw NotFoundException if role not found', async () => {
-      prismaMockService.user.findUnique.mockResolvedValue(null);
-      prismaMockService.role.findUnique.mockResolvedValue(null);
+      prismaMockService.user.findUnique.mockResolvedValueOnce(null);
+      prismaMockService.role.findUnique.mockResolvedValueOnce(null);
 
       await expect(service.create(params)).rejects.toThrow(NotFoundException);
 
@@ -150,9 +150,9 @@ describe('UsersService', () => {
     };
 
     it('should update an existing user', async () => {
-      prismaMockService.user.findUnique.mockResolvedValue(userMock);
+      prismaMockService.user.findUnique.mockResolvedValueOnce(userMock);
 
-      prismaMockService.user.update.mockResolvedValue({
+      prismaMockService.user.update.mockResolvedValueOnce({
         ...userMock,
         ...updateData,
       });
@@ -183,7 +183,7 @@ describe('UsersService', () => {
     });
 
     it('should throw NotFoundException if user does not exist', async () => {
-      prismaMockService.user.findUnique.mockResolvedValue(null);
+      prismaMockService.user.findUnique.mockResolvedValueOnce(null);
 
       await expect(service.update(userId, updateData)).rejects.toThrow(
         NotFoundException,

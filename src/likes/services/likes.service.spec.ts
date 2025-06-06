@@ -68,9 +68,9 @@ describe('LikesService', () => {
 
   describe('toggleLike', () => {
     it('should create a new like when user has not liked the product', async () => {
-      prismaMockService.product.findUnique.mockResolvedValue(productMock);
-      prismaMockService.like.findFirst.mockResolvedValue(null);
-      prismaMockService.like.create.mockResolvedValue(likeMock);
+      prismaMockService.product.findUnique.mockResolvedValueOnce(productMock);
+      prismaMockService.like.findFirst.mockResolvedValueOnce(null);
+      prismaMockService.like.create.mockResolvedValueOnce(likeMock);
 
       const result = await service.toggleLike(userMock.id, productMock.id);
 
@@ -135,7 +135,7 @@ describe('LikesService', () => {
     });
 
     it('should throw NotFoundException if product does not exist', async () => {
-      prismaMockService.product.findUnique.mockResolvedValue(null);
+      prismaMockService.product.findUnique.mockResolvedValueOnce(null);
 
       await expect(
         service.toggleLike(userMock.id, productMock.id),

@@ -44,4 +44,9 @@ export const coveragePathIgnorePatterns = [
   'env.validation.ts',
   'dataloader.service.ts',
   'password-regex.ts',
+  'cloudinary.provider.ts',
+  'constants.ts',
+  'sendgrid-client.ts',
+  'get-user.decorator.ts',
+  'passport-local.guard.ts',
 ];

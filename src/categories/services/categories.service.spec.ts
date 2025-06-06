@@ -32,7 +32,7 @@ describe('CategoriesService', () => {
   describe('getAllCategoriesByProductIds', () => {
     it('should return categories for all product IDs', async () => {
       const productIds = [1, 2];
-      prismaMockService.product.findMany.mockResolvedValue(
+      prismaMockService.product.findMany.mockResolvedValueOnce(
         categoryProductsMock,
       );
 
@@ -55,7 +55,7 @@ describe('CategoriesService', () => {
           category: null,
         },
       ];
-      prismaMockService.product.findMany.mockResolvedValue(
+      prismaMockService.product.findMany.mockResolvedValueOnce(
         productsWithMissingCategory,
       );
 
@@ -71,7 +71,7 @@ describe('CategoriesService', () => {
 
     it('should return categories in the same order as requested product IDs', async () => {
       const productIds = [2, 1];
-      prismaMockService.product.findMany.mockResolvedValue(
+      prismaMockService.product.findMany.mockResolvedValueOnce(
         categoryProductsMock,
       );
 
@@ -82,7 +82,7 @@ describe('CategoriesService', () => {
 
     it('should handle empty product IDs array', async () => {
       const productIds: number[] = [];
-      prismaMockService.product.findMany.mockResolvedValue([]);
+      prismaMockService.product.findMany.mockResolvedValueOnce([]);
 
       const result = await service.getAllCategoriesByProductIds(productIds);
 

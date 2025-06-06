@@ -38,8 +38,8 @@ describe('OrdersService', () => {
     const paymentIntentId = 'pi_test_123';
 
     it('should create an order when cart exists', async () => {
-      prismaMockService.cart.findUnique.mockResolvedValue(cartMock);
-      prismaMockService.order.create.mockResolvedValue(orderMock);
+      prismaMockService.cart.findUnique.mockResolvedValueOnce(cartMock);
+      prismaMockService.order.create.mockResolvedValueOnce(orderMock);
 
       const result = await service.create(cartId, paymentIntentId);
 
@@ -53,7 +53,7 @@ describe('OrdersService', () => {
     });
 
     it('should throw NotFoundException when cart does not exist', async () => {
-      prismaMockService.cart.findUnique.mockResolvedValue(null);
+      prismaMockService.cart.findUnique.mockResolvedValueOnce(null);
 
       await expect(service.create(cartId, paymentIntentId)).rejects.toThrow(
         NotFoundException,
@@ -69,7 +69,7 @@ describe('OrdersService', () => {
     const paymentIntentId = 'pi_test_123';
 
     it('should return an order if found', async () => {
-      prismaMockService.order.findFirst.mockResolvedValue(orderMock);
+      prismaMockService.order.findFirst.mockResolvedValueOnce(orderMock);
 
       const result = await service.findByPaymentIntent(paymentIntentId);
 
@@ -80,7 +80,7 @@ describe('OrdersService', () => {
     });
 
     it('should throw NotFoundException if order not found', async () => {
-      prismaMockService.order.findFirst.mockResolvedValue(null);
+      prismaMockService.order.findFirst.mockResolvedValueOnce(null);
 
       await expect(
         service.findByPaymentIntent(paymentIntentId),
@@ -92,7 +92,7 @@ describe('OrdersService', () => {
     const userId = 1;
 
     it('should return transformed user orders', async () => {
-      prismaMockService.order.findMany.mockResolvedValue(ordersMock);
+      prismaMockService.order.findMany.mockResolvedValueOnce(ordersMock);
 
       const result = await service.getUserOrders(userId);
 
@@ -120,7 +120,7 @@ describe('OrdersService', () => {
 
   describe('getAllOrders', () => {
     it('should return transformed orders with user data', async () => {
-      prismaMockService.order.findMany.mockResolvedValue(ordersMock);
+      prismaMockService.order.findMany.mockResolvedValueOnce(ordersMock);
 
       const result = await service.getAllOrders();
 

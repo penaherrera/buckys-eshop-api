@@ -53,7 +53,7 @@ describe('AuthService', () => {
 
   describe('createAccessToken', () => {
     it('should return an access token', async () => {
-      jest.spyOn(service, 'create').mockResolvedValue(authMock);
+      jest.spyOn(service, 'create').mockResolvedValueOnce(authMock);
       jest.spyOn(service['jwtService'], 'sign').mockReturnValue('mock-token');
 
       const result = await service.createAccessToken(
@@ -89,8 +89,8 @@ describe('AuthService', () => {
         password: 'Nestjs1*',
       };
 
-      usersMockService.findUserByEmail.mockResolvedValue(userMock);
-      (compare as jest.Mock).mockResolvedValue(true);
+      usersMockService.findUserByEmail.mockResolvedValueOnce(userMock);
+      (compare as jest.Mock).mockResolvedValueOnce(true);
 
       const result = await service.validateUser(authCredentialsDto);
 
@@ -112,7 +112,7 @@ describe('AuthService', () => {
       };
 
       usersMockService.findUserByEmail.mockResolvedValueOnce(userMock);
-      (compare as jest.Mock).mockResolvedValue(false);
+      (compare as jest.Mock).mockResolvedValueOnce(false);
 
       await expect(
         service.validateUser(invalidAuthCredentialsDto),

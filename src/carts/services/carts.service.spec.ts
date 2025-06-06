@@ -26,7 +26,7 @@ describe('CartsService - getUserLastCart', () => {
   });
 
   it('should return user cart when found', async () => {
-    prismaMockService.cart.findFirst.mockResolvedValue(cartMock);
+    prismaMockService.cart.findFirst.mockResolvedValueOnce(cartMock);
 
     const result = await service.getUserLastCart(1);
 
@@ -37,13 +37,13 @@ describe('CartsService - getUserLastCart', () => {
   });
 
   it('should throw NotFoundException when no cart exists', async () => {
-    prismaMockService.cart.findFirst.mockResolvedValue(null);
+    prismaMockService.cart.findFirst.mockResolvedValueOnce(null);
 
     await expect(service.getUserLastCart(1)).rejects.toThrow(NotFoundException);
   });
 
   it('should call prisma with correct parameters', async () => {
-    prismaMockService.cart.findFirst.mockResolvedValue(cartMock);
+    prismaMockService.cart.findFirst.mockResolvedValueOnce(cartMock);
 
     await service.getUserLastCart(1);
 
