@@ -1,14 +1,20 @@
 import { UserEntity } from '../../users/entities/user.entity';
 import { RoleEntity } from '../entities/role.entity';
-import { ProductDto } from '../../products/dtos/responses/product.dto';
 import { GenderEnum } from '../../products/enums/gender.enum';
 import { ClothingTypeEnum } from '../../products/enums/clothing-type.enum';
-import { BrandDto } from '../../brands/dtos/brand.dto';
 import { Decimal } from '@prisma/client/runtime/library';
-import { BrandEntity } from 'src/brands/entities/brand.entity';
-import { CategoryEntity } from 'src/categories/entitites/category.entity';
-import { ProductEntity } from 'src/products/entities/product.entity';
-import { AuthEntity } from 'src/auth/entities/auth.entity';
+import { BrandEntity } from '../../brands/entities/brand.entity';
+import { CategoryEntity } from '../../categories/entitites/category.entity';
+import { ProductEntity } from '../../products/entities/product.entity';
+import { AuthEntity } from '../../auth/entities/auth.entity';
+import { CartEntity } from '../../carts/entities/cart.entity';
+import { SizeEnum } from '../../variants/enums/size.enum';
+import { VariantEntity } from '../../variants/entities/variant.entity';
+import { OrderEntity } from '../../orders/entities/order.entity';
+import { StatusEnum } from '../../orders/enums/status.enum';
+import { TransactionEntity } from '../../transactions/entities/transaction.entity';
+import { LikeEntity } from 'src/likes/entities/like.entity';
+import { ProductDto } from 'src/products/dtos/responses/product.dto';
 
 const now = new Date();
 
@@ -178,4 +184,145 @@ export const productMock: ProductEntity = {
   updatedAt: now,
   deletedAt: null,
   imageSecureUrl: null,
+};
+
+export const variantMock: VariantEntity = {
+  id: 1,
+  productId: 1,
+  stock: 100,
+  color: 'black',
+  size: SizeEnum.EXTRA_SMALL,
+  createdAt: now,
+  updatedAt: now,
+  product: productMock,
+};
+
+export const cartMock: CartEntity = {
+  id: 1,
+  userId: 1,
+  cartProducts: [
+    {
+      id: 1,
+      variant: {
+        id: 1,
+        color: 'black',
+        product: {
+          id: 1,
+          name: 'Product 1',
+          price: new Decimal(100),
+          categoryId: 1,
+          brandId: 1,
+          isActive: false,
+          inStock: false,
+          description: '',
+          gender: GenderEnum.UNISEX,
+          clothingType: ClothingTypeEnum.CLOTHING,
+          createdAt: now,
+          updatedAt: now,
+          deletedAt: null,
+          imageSecureUrl: null,
+        },
+        productId: 1,
+        stock: 1,
+        size: SizeEnum.EXTRA_SMALL,
+        createdAt: now,
+        updatedAt: now,
+      },
+      variantId: 1,
+      cartId: 1,
+      createdAt: now,
+    },
+  ],
+  createdAt: now,
+  updatedAt: now,
+};
+
+export const orderMock: OrderEntity = {
+  id: 1,
+  cartId: 1,
+  status: StatusEnum.PENDING,
+  stripePaymentIntendId: 'pi_test_123',
+  createdAt: now,
+};
+
+export const transactionMock: TransactionEntity = {
+  id: 1,
+  orderId: 1,
+  amount: 1,
+  stripeChargeId: 'ch_test_123',
+  receiptUrl: '',
+  currency: 'usd',
+  stripeStatus: 'SUCCEEDED',
+  createdAt: now,
+  order: orderMock,
+};
+
+export const ordersMock: OrderEntity[] = [
+  {
+    ...orderMock,
+    cart: {
+      ...cartMock,
+      userId: cartMock.userId,
+      cartProducts: [
+        {
+          variant: {
+            product: {
+              price: new Decimal(100),
+              id: 1,
+              categoryId: 1,
+              brandId: 1,
+              isActive: false,
+              inStock: false,
+              name: 'test',
+              description: 'test description',
+              gender: GenderEnum.UNISEX,
+              clothingType: ClothingTypeEnum.CLOTHING,
+              createdAt: now,
+              updatedAt: now,
+              deletedAt: null,
+              imageSecureUrl: null,
+            },
+            id: 1,
+            productId: 1,
+            stock: 1,
+            color: '',
+            size: SizeEnum.EXTRA_SMALL,
+            createdAt: now,
+            updatedAt: now,
+          },
+          id: 1,
+          variantId: 1,
+          cartId: 1,
+          createdAt: now,
+        },
+      ],
+    },
+    transactions: [transactionMock],
+  },
+];
+
+export const likesMock: LikeEntity[] = [
+  { id: 1, userId: 1, productId: 1, createdAt: now, products: [productMock] },
+];
+
+export const likeMock: LikeEntity = {
+  id: 1,
+  productId: 1,
+  userId: 1,
+  createdAt: now,
+};
+
+export const cartProductMock = {
+  id: 1,
+  cartId: cartMock.id,
+  variantId: variantMock.id,
+  variant: variantMock,
+};
+
+export const loggerMock = {
+  log: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn(),
+  debug: jest.fn(),
+  verbose: jest.fn(),
 };
