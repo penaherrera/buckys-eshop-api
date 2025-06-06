@@ -9,9 +9,14 @@ import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.
 import { ClothingTypeEnum } from '../enums/clothing-type.enum';
 import { GenderEnum } from '../enums/gender.enum';
 import { SizeEnum } from '../../variants/enums/size.enum';
-import { brandMock1, categoryMock, productMock } from '../../common/mocks/mock';
+import {
+  brandMock1,
+  categoryMock,
+  loggerMock,
+  productMock,
+} from '../../common/mocks/mock';
 import { VariantsService } from '../../variants/services/variants.service';
-import { NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, NotFoundException } from '@nestjs/common';
 import { UpdateProductInput } from '../dtos/update-product.input';
 import { PaginationArgs } from '../../common/pagination/dtos/pagination.dto';
 
@@ -23,6 +28,7 @@ describe('ProductsService', () => {
   beforeEach(async () => {
     prismaMockService = createPrismaMockService();
     variantsMockService = createVariantsMockService();
+    jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -36,7 +42,9 @@ describe('ProductsService', () => {
           useValue: variantsMockService,
         },
       ],
-    }).compile();
+    })
+      .setLogger(loggerMock as unknown as ConsoleLogger)
+      .compile();
 
     service = module.get<ProductsService>(ProductsService);
   });
