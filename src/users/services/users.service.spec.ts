@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import { PrismaClient } from '@prisma/client';
-import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
-import { roleMock, userMock } from '../../common/mocks/mock';
+import { loggerMock, roleMock, userMock } from '../../common/mocks/mock';
 import {
   ConflictException,
+  ConsoleLogger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -27,7 +26,9 @@ describe('UsersService', () => {
           useValue: prismaMockService,
         },
       ],
-    }).compile();
+    })
+      .setLogger(loggerMock as unknown as ConsoleLogger)
+      .compile();
 
     service = module.get<UsersService>(UsersService);
   });
