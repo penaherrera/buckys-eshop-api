@@ -14,7 +14,7 @@ import { OrderEntity } from '../../orders/entities/order.entity';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { TransactionEntity } from '../../transactions/entities/transaction.entity';
 import { LikeEntity } from 'src/likes/entities/like.entity';
-import { ProductDto } from 'src/products/dtos/responses/product.dto';
+import { CheckoutDto } from 'src/payments/dtos/checkout.dto';
 
 const now = new Date();
 
@@ -317,6 +317,59 @@ export const cartProductMock = {
   cartId: cartMock.id,
   variantId: variantMock.id,
   variant: variantMock,
+};
+
+export const adminRoleMock: RoleEntity = {
+  id: 1,
+  name: 'Administrator',
+  slug: 'admin',
+  createdAt: now,
+  updatedAt: now,
+};
+
+export const clientRoleMock: RoleEntity = {
+  id: 2,
+  name: 'Client',
+  slug: 'client',
+  createdAt: now,
+  updatedAt: now,
+};
+
+export const variantsMock: VariantEntity[] = [
+  {
+    id: 1,
+    productId: 1,
+    color: 'red',
+    size: SizeEnum.SMALL,
+    stock: 100,
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: 2,
+    productId: 1,
+    color: 'blue',
+    size: SizeEnum.MEDIUM,
+    stock: 50,
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: 3,
+    productId: 2,
+    color: 'green',
+    size: SizeEnum.LARGE,
+    stock: 75,
+    createdAt: now,
+    updatedAt: now,
+  },
+];
+
+export const paymentIntentMock = {
+  id: 'pi_test_123',
+  amount: 5000,
+  currency: 'usd',
+  status: 'requires_payment_method',
 };
 
 export const loggerMock = {
