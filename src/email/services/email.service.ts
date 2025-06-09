@@ -4,7 +4,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { MailDataRequired } from '@sendgrid/mail';
-import { SendGridClient } from './sendgrid-client';
+import { SendGridClient } from '../sendgrid-client';
 
 @Injectable()
 export class EmailService {

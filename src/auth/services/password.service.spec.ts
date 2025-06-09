@@ -9,7 +9,7 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../../users/services/users.service';
-import { EmailService } from '../../email/email.service';
+import { EmailService } from '../../email/services/email.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { ResetPasswordDto } from '../../auth/dtos/requests/reset-password.dto';
 import { userMock } from '../../common/mocks/mock';

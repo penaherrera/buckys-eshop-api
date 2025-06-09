@@ -10,7 +10,7 @@ import { ResetPasswordDto } from '../../auth/dtos/requests/reset-password.dto';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { UsersService } from '../../users/services/users.service';
 import { nanoid } from 'nanoid';
-import { EmailService } from '../../email/email.service';
+import { EmailService } from '../../email/services/email.service';
 
 @Injectable()
 export class PasswordService {

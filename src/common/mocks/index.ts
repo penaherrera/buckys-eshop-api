@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { UsersService } from '../../users/services/users.service';
 import { VariantsService } from '../../variants/services/variants.service';
-import { EmailService } from '../../email/email.service';
+import { EmailService } from '../../email/services/email.service';
 import { ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import Stripe from 'stripe';
