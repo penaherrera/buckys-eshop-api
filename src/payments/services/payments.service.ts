@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -11,6 +12,8 @@ import { CheckoutDto } from '../dtos/checkout.dto';
 import { OrdersService } from '../../orders/services/orders.service';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { OrderEntity } from '../../orders/entities/order.entity';
+import paymentsConfig from '../config/payments.config';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class PaymentsService {
@@ -18,10 +21,12 @@ export class PaymentsService {
   private stripe: Stripe;
 
   constructor(
+    @Inject(paymentsConfig.KEY)
+    private readonly paymentsConfiguration: ConfigType<typeof paymentsConfig>,
     private readonly prismaService: PrismaService,
     private readonly ordersService: OrdersService,
   ) {
-    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
+    this.stripe = new Stripe(paymentsConfiguration.stripeSecretKey);
   }
 
   async createPaymentIntent(
@@ -50,7 +55,7 @@ export class PaymentsService {
       const event = this.stripe.webhooks.constructEvent(
         rawBody,
         signature,
-        process.env.STRIPE_WEBHOOK || '',
+        this.paymentsConfiguration.stripeWebhook,
       );
 
       this.logger.log('Stripe Webhook Event Received:', event.type);
