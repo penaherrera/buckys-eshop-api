@@ -23,12 +23,14 @@ import { ConfigModule } from '@nestjs/config';
 import { validate } from './env.validation';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ImagesModule } from './images/images.module';
+import appConfig from './app/config/app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validate,
       isGlobal: true,
+      load: [appConfig],
     }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
