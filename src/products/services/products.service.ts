@@ -12,6 +12,7 @@ import {
   calculatePagination,
   paginationMetadata,
 } from '../../common/pagination/pagination';
+import { ProductEntity } from '../entities/product.entity';
 
 @Injectable()
 export class ProductsService {
@@ -186,5 +187,32 @@ export class ProductsService {
         throw new NotFoundException('Brand not found');
       }
     }
+  }
+
+  async getAllProductsByVariantIds(
+    variantIds: number[],
+  ): Promise<(ProductDto | null)[]> {
+    const variants = await this.prismaService.variant.findMany({
+      where: {
+        id: {
+          in: variantIds,
+        },
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    const variantToProductMap = new Map<number, any>();
+    variants.forEach((variant) => {
+      if (variant.product) {
+        variantToProductMap.set(variant.id, variant.product);
+      }
+    });
+
+    return variantIds.map((variantId) => {
+      const product = variantToProductMap.get(variantId);
+      return product ? plainToInstance(ProductDto, product) : null;
+    });
   }
 }

@@ -13,8 +13,7 @@ import { VariantEntity } from '../../variants/entities/variant.entity';
 import { OrderEntity } from '../../orders/entities/order.entity';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { TransactionEntity } from '../../transactions/entities/transaction.entity';
-import { LikeEntity } from 'src/likes/entities/like.entity';
-import { CheckoutDto } from 'src/payments/dtos/checkout.dto';
+import { LikeEntity } from '../../likes/entities/like.entity';
 
 const now = new Date();
 
