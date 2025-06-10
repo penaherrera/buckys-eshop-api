@@ -12,13 +12,7 @@ export class CartsService {
     const cart = await this.prismaService.cart.findFirst({
       where: { userId },
       include: {
-        cartProducts: {
-          include: {
-            variant: {
-              include: { product: true },
-            },
-          },
-        },
+        cartProducts: true,
       },
       orderBy: {
         updatedAt: 'asc',
@@ -30,18 +24,6 @@ export class CartsService {
       throw new NotFoundException('User has no carts');
     }
 
-    return plainToInstance(CartDto, {
-      ...cart,
-      cartProducts: cart.cartProducts.map((cartProduct) => ({
-        ...cartProduct,
-        variant: {
-          ...cartProduct.variant,
-          product: {
-            ...cartProduct.variant.product,
-            price: cartProduct.variant.product.price.toNumber(),
-          },
-        },
-      })),
-    });
+    return plainToInstance(CartDto, cart);
   }
 }

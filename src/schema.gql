@@ -49,6 +49,7 @@ type UserEntity {
   deletedAt: DateTime
   auth: [AuthEntity!]
   role: RoleEntity!
+  cartProducts: [CartProductEntity!]!
 }
 
 type BrandEntity {
@@ -126,7 +127,7 @@ type CartProductEntity {
   id: ID!
   variantId: Float!
   cartId: Float!
-  variant: VariantEntity
+  variant: VariantEntity!
   cart: CartEntity
   createdAt: DateTime!
 }
@@ -160,8 +161,8 @@ type CategoryDto {
 
 type ProductDto {
   id: ID!
-  categoryId: ID!
-  brandId: ID!
+  categoryId: Int!
+  brandId: Int!
   isActive: Boolean!
   inStock: Boolean!
   name: String!
@@ -180,7 +181,7 @@ type ProductDto {
 
 type VariantDto {
   id: ID!
-  productId: ID!
+  productId: Int!
   stock: Int!
   color: String!
   size: SizeEnum!
@@ -191,8 +192,8 @@ type VariantDto {
 
 type CartProductDto {
   id: ID!
-  variantId: ID!
-  cartId: ID!
+  variantId: Int!
+  cartId: Int!
   variant: VariantDto
   cart: CartDto
   createdAt: DateTime!
@@ -200,7 +201,7 @@ type CartProductDto {
 
 type CartDto {
   id: ID!
-  userId: ID!
+  userId: Int!
   user: UserDto!
   createdAt: DateTime!
   updatedAt: DateTime!

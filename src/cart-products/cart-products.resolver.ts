@@ -1,4 +1,13 @@
-import { Args, Int, Mutation, Resolver, Query } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Resolver,
+  Query,
+  ResolveField,
+  Parent,
+  Context,
+} from '@nestjs/graphql';
 import { UseFilters, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CartProductsService } from './services/cart-products.service';
@@ -7,12 +16,22 @@ import { UserEntity } from '../users/entities/user.entity';
 import { CartProductEntity } from './entities/cart-product.entity';
 import { CartProductDto } from './dtos/cart-product.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
+import { VariantEntity } from '../variants/entities/variant.entity';
+import { IDataloaders } from '../dataloader/interfaces/dataloader.interface';
 
 @UseFilters(GraphQlExceptionFilter)
 @UseGuards(JwtAuthGuard)
 @Resolver(() => CartProductEntity)
 export class CartProductsResolver {
   constructor(private readonly cartProductsService: CartProductsService) {}
+
+  @ResolveField('variant', () => VariantEntity)
+  getVariants(
+    @Parent() cartProduct: CartProductEntity,
+    @Context() { loaders }: { loaders: IDataloaders },
+  ) {
+    return loaders.cartProductsLoader.load(cartProduct.id);
+  }
 
   @Mutation(() => CartProductEntity, {
     name: 'addToCart',
