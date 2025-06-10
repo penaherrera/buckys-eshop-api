@@ -15,7 +15,7 @@ export class VariantDto {
   @Expose()
   id: number;
 
-  @Field(() => ID)
+  @Field(() => Int)
   @Expose()
   productId: number;
 

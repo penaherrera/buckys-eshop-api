@@ -1,4 +1,10 @@
-import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
 import { Expose } from 'class-transformer';
 import { CartProductDto } from '../../cart-products/dtos/cart-product.dto';
 import { UserDto } from '../../users/dtos/responses/user.dto';
@@ -9,7 +15,7 @@ export class CartDto {
   @Expose()
   id: number;
 
-  @Field(() => ID)
+  @Field(() => Int)
   @Expose()
   userId: number;
 

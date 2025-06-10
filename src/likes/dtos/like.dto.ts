@@ -1,4 +1,10 @@
-import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
 import { Expose } from 'class-transformer';
 import { ProductDto } from '../../products/dtos/responses/product.dto';
 
@@ -8,11 +14,11 @@ export class LikeDto {
   @Expose()
   id: number;
 
-  @Field(() => ID)
+  @Field(() => Int)
   @Expose()
   productId: number;
 
-  @Field(() => ID)
+  @Field(() => Int)
   @Expose()
   userId: number;
 

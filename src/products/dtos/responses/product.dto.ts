@@ -5,6 +5,7 @@ import {
   GraphQLISODateTime,
   registerEnumType,
   Float,
+  Int,
 } from '@nestjs/graphql';
 import { Expose, Type } from 'class-transformer';
 import { BrandDto } from '../../../brands/dtos/brand.dto';
@@ -13,25 +14,17 @@ import { ClothingTypeEnum } from '../../../products/enums/clothing-type.enum';
 import { GenderEnum } from '../../../products/enums/gender.enum';
 import { VariantDto } from '../../../variants/dtos/responses/variant.dto';
 
-registerEnumType(GenderEnum, {
-  name: 'GenderEnum',
-});
-
-registerEnumType(ClothingTypeEnum, {
-  name: 'ClothingTypeEnum',
-});
-
 @ObjectType()
 export class ProductDto {
   @Field(() => ID)
   @Expose()
   id: number;
 
-  @Field(() => ID)
+  @Field(() => Int)
   @Expose()
   categoryId: number;
 
-  @Field(() => ID)
+  @Field(() => Int)
   @Expose()
   brandId: number;
 
