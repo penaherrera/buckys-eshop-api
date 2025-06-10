@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum SizeEnum {
   EXTRA_SMALL = 'EXTRA_SMALL',
   SMALL = 'SMALL',
@@ -5,3 +7,7 @@ export enum SizeEnum {
   LARGE = 'LARGE',
   EXTRA_LARGE = 'EXTRA_LARGE',
 }
+
+registerEnumType(SizeEnum, {
+  name: 'SizeEnum',
+});

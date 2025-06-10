@@ -11,10 +11,6 @@ import { StatusEnum } from '../enums/status.enum';
 import { CartDto } from '../../carts/dtos/cart.dto';
 import { TransactionDto } from '../../transactions/dtos/transaction.dto';
 
-registerEnumType(StatusEnum, {
-  name: 'StatusEnum',
-});
-
 @ObjectType()
 export class OrderDto {
   @Field(() => ID)
