@@ -23,14 +23,6 @@ export class CartProductDto {
   @Expose()
   cartId: number;
 
-  @Field(() => VariantDto, { nullable: true })
-  @Expose()
-  variant?: VariantDto;
-
-  @Field(() => CartDto, { nullable: true })
-  @Expose()
-  cart?: CartDto;
-
   @Field(() => GraphQLISODateTime)
   @Expose()
   createdAt: Date;

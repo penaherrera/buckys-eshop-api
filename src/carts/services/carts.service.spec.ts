@@ -3,8 +3,7 @@ import { CartsService } from './carts.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { ConsoleLogger, NotFoundException } from '@nestjs/common';
-import { Decimal } from '@prisma/client/runtime/library';
-import { cartMock, loggerMock } from '../../common/mocks/mock';
+import { cartDtoMock, cartMock, loggerMock } from '../../common/mocks/mock';
 
 describe('CartsService - getUserLastCart', () => {
   let service: CartsService;
@@ -26,7 +25,7 @@ describe('CartsService - getUserLastCart', () => {
   });
 
   it('should return user cart when found', async () => {
-    prismaMockService.cart.findFirst.mockResolvedValueOnce(cartMock);
+    prismaMockService.cart.findFirst.mockResolvedValueOnce(cartDtoMock);
 
     const result = await service.getUserLastCart(1);
 
@@ -43,22 +42,18 @@ describe('CartsService - getUserLastCart', () => {
   });
 
   it('should call prisma with correct parameters', async () => {
-    prismaMockService.cart.findFirst.mockResolvedValueOnce(cartMock);
+    prismaMockService.cart.findFirst.mockResolvedValueOnce(cartDtoMock);
 
     await service.getUserLastCart(1);
 
     expect(prismaMockService.cart.findFirst).toHaveBeenCalledWith({
       where: { userId: 1 },
       include: {
-        cartProducts: {
-          include: {
-            variant: {
-              include: { product: true },
-            },
-          },
-        },
+        cartProducts: true,
       },
-      orderBy: { updatedAt: 'asc' },
+      orderBy: {
+        updatedAt: 'asc',
+      },
     });
   });
 });
