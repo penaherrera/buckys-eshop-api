@@ -49,7 +49,6 @@ type UserEntity {
   deletedAt: DateTime
   auth: [AuthEntity!]
   role: RoleEntity!
-  cartProducts: [CartProductEntity!]!
 }
 
 type BrandEntity {
@@ -141,6 +140,22 @@ type CartEntity {
   cartProducts: [CartProductEntity!]
 }
 
+type CartProductDto {
+  id: ID!
+  variantId: Int!
+  cartId: Int!
+  createdAt: DateTime!
+}
+
+type CartDto {
+  id: ID!
+  userId: Int!
+  user: UserDto!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  cartProducts: [CartProductDto!]
+}
+
 type BrandDto {
   id: ID!
   name: String!
@@ -157,6 +172,17 @@ type CategoryDto {
   createdAt: DateTime!
   updatedAt: DateTime!
   products: [ProductDto!]
+}
+
+type VariantDto {
+  id: ID!
+  productId: Int!
+  stock: Int!
+  color: String!
+  size: SizeEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  product: ProductDto
 }
 
 type ProductDto {
@@ -177,35 +203,6 @@ type ProductDto {
   deletedAt: DateTime
   variants: [VariantDto!]
   imageSecureUrl: String
-}
-
-type VariantDto {
-  id: ID!
-  productId: Int!
-  stock: Int!
-  color: String!
-  size: SizeEnum!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  product: ProductDto
-}
-
-type CartProductDto {
-  id: ID!
-  variantId: Int!
-  cartId: Int!
-  variant: VariantDto
-  cart: CartDto
-  createdAt: DateTime!
-}
-
-type CartDto {
-  id: ID!
-  userId: Int!
-  user: UserDto!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  cartProducts: [CartProductDto!]
 }
 
 type TransactionEntity {

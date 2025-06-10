@@ -56,14 +56,6 @@ export class UsersResolver {
     return this.cartsService.getUserLastCart(user.id);
   }
 
-  @ResolveField('cartProducts', () => [CartProductEntity])
-  getCartProducts(
-    @Parent() cart: CartEntity,
-    @Context() { loaders }: { loaders: IDataloaders },
-  ) {
-    return loaders.variantsLoader.load(cart.id);
-  }
-
   @Query(() => [ProductEntity], {
     name: 'myLikes',
     description: 'Get current user likes',
