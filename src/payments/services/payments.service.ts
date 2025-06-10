@@ -12,22 +12,18 @@ import { CheckoutDto } from '../dtos/checkout.dto';
 import { OrdersService } from '../../orders/services/orders.service';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { OrderEntity } from '../../orders/entities/order.entity';
-import paymentsConfig from '../config/payments.config';
 import { ConfigType } from '@nestjs/config';
+import { StripeService } from '../../stripe/services/stripe.service';
 
 @Injectable()
 export class PaymentsService {
   private readonly logger = new Logger(PaymentsService.name);
-  private stripe: Stripe;
 
   constructor(
-    @Inject(paymentsConfig.KEY)
-    private readonly paymentsConfiguration: ConfigType<typeof paymentsConfig>,
     private readonly prismaService: PrismaService,
     private readonly ordersService: OrdersService,
-  ) {
-    this.stripe = new Stripe(paymentsConfiguration.stripeSecretKey);
-  }
+    private readonly stripeService: StripeService,
+  ) {}
 
   async createPaymentIntent(
     checkoutDto: CheckoutDto,
@@ -35,10 +31,10 @@ export class PaymentsService {
     const { currency, amount, cartId } = checkoutDto;
 
     try {
-      const paymentIntent = await this.stripe.paymentIntents.create({
+      const paymentIntent = await this.stripeService.createPaymentIntent(
         amount,
         currency,
-      });
+      );
       await this.ordersService.create(cartId, paymentIntent.id);
       this.logger.log(`PaymentIntent created successfully`);
       this.logger.log('Order created successfully');
@@ -52,13 +48,7 @@ export class PaymentsService {
 
   async handleWebhook(rawBody, signature: string): Promise<void> {
     try {
-      const event = this.stripe.webhooks.constructEvent(
-        rawBody,
-        signature,
-        this.paymentsConfiguration.stripeWebhook,
-      );
-
-      this.logger.log('Stripe Webhook Event Received:', event.type);
+      const event = await this.stripeService.constructEvent(rawBody, signature);
 
       switch (event.type) {
         case 'charge.succeeded':
