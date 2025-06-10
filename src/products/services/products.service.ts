@@ -163,9 +163,7 @@ export class ProductsService {
     return plainToInstance(ProductDto, updatedProduct);
   }
 
-  private async verifyIdsExist(
-    input: Partial<Pick<CreateProductInput, 'categoryId' | 'brandId'>>,
-  ): Promise<void> {
+  private async verifyIdsExist(input: BrandAndCategoryIds): Promise<void> {
     const { categoryId, brandId } = input;
 
     if (categoryId !== undefined) {
