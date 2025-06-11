@@ -387,6 +387,14 @@ export const paymentIntentMock = {
   status: 'requires_payment_method',
 };
 
+export const chargeMock = {
+  id: 'ch_test123',
+  amount: 2000,
+  currency: 'usd',
+  payment_intent: 'pi_test123',
+  receipt_url: 'https://pay.stripe.com/receipts/test',
+};
+
 export const loggerMock = {
   log: jest.fn(),
   error: jest.fn(),
