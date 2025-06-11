@@ -5,7 +5,7 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 import { ConsoleLogger, NotFoundException } from '@nestjs/common';
 import { cartDtoMock, cartMock, loggerMock } from '../../common/mocks/mock';
 
-describe('CartsService - getUserLastCart', () => {
+describe('CartsService', () => {
   let service: CartsService;
   let prismaMockService;
 
