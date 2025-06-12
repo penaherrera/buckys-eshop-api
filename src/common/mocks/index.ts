@@ -9,6 +9,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { OrdersService } from '../../orders/services/orders.service';
 import { StripeService } from '../../stripe/services/stripe.service';
 import { SendGridClient } from '../../email/sendgrid-client';
+import { CloudinaryService } from '../../cloudinary/services/cloudinary.service';
 
 export const createUsersMockService = (): DeepMockProxy<UsersService> =>
   mockDeep<UsersService>();
@@ -39,3 +40,6 @@ export const createStripeMockService = (): DeepMockProxy<StripeService> =>
 
 export const createSendgridMockClient = (): DeepMockProxy<SendGridClient> =>
   mockDeep<SendGridClient>();
+
+export const createCloudinaryMockService =
+  (): DeepMockProxy<CloudinaryService> => mockDeep<CloudinaryService>();

@@ -395,6 +395,28 @@ export const chargeMock = {
   receipt_url: 'https://pay.stripe.com/receipts/test',
 };
 
+export const uploadedImageMock = {
+  public_id: 'sample_public_id_123',
+  version: 1638360000,
+  signature: 'sample_signature_hash',
+  width: 800,
+  height: 600,
+  format: 'jpg',
+  resource_type: 'image',
+  created_at: '2021-12-01T10:00:00Z',
+  tags: [],
+  bytes: 85678,
+  type: 'upload',
+  etag: 'sample_etag_hash',
+  placeholder: false,
+  url: 'http://res.cloudinary.com/demo/image/upload/v1638360000/sample_public_id_123.jpg',
+  secure_url:
+    'https://res.cloudinary.com/demo/image/upload/v1638360000/sample_public_id_123.jpg',
+  access_mode: 'public',
+  original_filename: 'test_image',
+  api_key: '123456789012345',
+};
+
 export const loggerMock = {
   log: jest.fn(),
   error: jest.fn(),
