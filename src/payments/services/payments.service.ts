@@ -64,7 +64,7 @@ export class PaymentsService {
   }
 
   private async handleChargeSucceeded(charge: Stripe.Charge): Promise<void> {
-    const order = await this.validateAndGetOrder(charge);
+    const order = await this.getOrder(charge);
 
     await this.prismaService.transaction.create({
       data: {
@@ -86,7 +86,7 @@ export class PaymentsService {
   }
 
   private async handleChargeFailed(charge: Stripe.Charge): Promise<void> {
-    const order = await this.validateAndGetOrder(charge);
+    const order = await this.getOrder(charge);
 
     await this.prismaService.transaction.create({
       data: {
@@ -102,9 +102,7 @@ export class PaymentsService {
     this.logger.warn(`Transaction created for failed charge ${charge.id}`);
   }
 
-  private async validateAndGetOrder(
-    charge: Stripe.Charge,
-  ): Promise<OrderEntity> {
+  private async getOrder(charge: Stripe.Charge): Promise<OrderEntity> {
     if (!charge.payment_intent) {
       this.logger.error('Charge without payment_intent:', charge.id);
       throw new BadRequestException('Missing payment_intent in charge');
