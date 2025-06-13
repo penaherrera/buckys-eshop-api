@@ -15,7 +15,7 @@ export class CartProductEntity implements CartProducts {
   readonly cartId: number;
 
   @Field(() => VariantEntity, { nullable: true })
-  readonly variant: VariantEntity;
+  readonly variant?: VariantEntity;
 
   @Field(() => CartEntity, { nullable: true })
   readonly cart?: CartEntity;

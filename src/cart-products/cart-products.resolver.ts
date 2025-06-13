@@ -14,7 +14,6 @@ import { CartProductsService } from './services/cart-products.service';
 import { GetUser } from '../users/decorators/get-user.decorator';
 import { UserEntity } from '../users/entities/user.entity';
 import { CartProductEntity } from './entities/cart-product.entity';
-import { CartProductDto } from './dtos/cart-product.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
 import { VariantEntity } from '../variants/entities/variant.entity';
 import { IDataloaders } from '../dataloader/interfaces/dataloader.interface';
@@ -42,7 +41,7 @@ export class CartProductsResolver {
     @GetUser() user: UserEntity,
     @Args('variantId', { type: () => Int }) variantId: number,
     @Args('cartId', { type: () => Int, nullable: true }) cartId: number,
-  ): Promise<CartProductDto> {
+  ): Promise<CartProductEntity> {
     return this.cartProductsService.addToCart(user.id, variantId, cartId);
   }
 

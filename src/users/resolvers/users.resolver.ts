@@ -1,13 +1,4 @@
-import {
-  Args,
-  Context,
-  Int,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserEntity } from '../entities/user.entity';
 import { UsersService } from '../services/users.service';
 import { UseFilters, UseGuards } from '@nestjs/common';
@@ -16,17 +7,12 @@ import { GetUser } from '../decorators/get-user.decorator';
 import { UpdateUserInput } from '../dtos/requests/update-user.input';
 import { UserDto } from '../dtos/responses/user.dto';
 import { CartEntity } from '../../carts/entities/cart.entity';
-import { CartDto } from '../../carts/dtos/cart.dto';
 import { CartsService } from '../../carts/services/carts.service';
 import { GraphQlExceptionFilter } from '../../common/filters/graphql-exception.filter';
 import { ProductEntity } from '../../products/entities/product.entity';
-import { ProductDto } from '../../products/dtos/responses/product.dto';
 import { LikesService } from '../../likes/services/likes.service';
 import { OrderEntity } from '../../orders/entities/order.entity';
-import { OrderDto } from '../../orders/dtos/order.dto';
 import { OrdersService } from '../../orders/services/orders.service';
-import { CartProductEntity } from '../../cart-products/entities/cart-product.entity';
-import { IDataloaders } from '../../dataloader/interfaces/dataloader.interface';
 
 @UseFilters(GraphQlExceptionFilter)
 @UseGuards(JwtAuthGuard)
@@ -52,7 +38,7 @@ export class UsersResolver {
     nullable: true,
     description: 'Get current user last cart',
   })
-  getUserLastCart(@GetUser() user: UserEntity): Promise<CartDto | null> {
+  getUserLastCart(@GetUser() user: UserEntity): Promise<CartEntity | null> {
     return this.cartsService.getUserLastCart(user.id);
   }
 
@@ -61,7 +47,7 @@ export class UsersResolver {
     description: 'Get current user likes',
     nullable: true,
   })
-  getUserLikes(@GetUser() user: UserEntity): Promise<ProductDto[] | null> {
+  getUserLikes(@GetUser() user: UserEntity): Promise<ProductEntity[] | null> {
     return this.likesService.getUserLikes(user.id);
   }
 
@@ -69,7 +55,7 @@ export class UsersResolver {
     name: 'myOrders',
     description: 'Retrieve current user orders',
   })
-  getUserOrders(@GetUser() user: UserEntity): Promise<OrderDto[] | null> {
+  getUserOrders(@GetUser() user: UserEntity): Promise<OrderEntity[] | null> {
     return this.ordersService.getUserOrders(user.id);
   }
 

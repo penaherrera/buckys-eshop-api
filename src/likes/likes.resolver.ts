@@ -5,7 +5,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LikesService } from './services/likes.service';
 import { GetUser } from '../users/decorators/get-user.decorator';
 import { UserEntity } from '../users/entities/user.entity';
-import { LikeDto } from './dtos/like.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
 
 @UseFilters(GraphQlExceptionFilter)
@@ -23,7 +22,7 @@ export class LikesResolver {
   toggleLike(
     @GetUser() user: UserEntity,
     @Args('productId', { type: () => Int }) productId: number,
-  ): Promise<LikeDto | null> {
+  ): Promise<LikeEntity | null> {
     return this.likesService.toggleLike(user.id, productId);
   }
 }

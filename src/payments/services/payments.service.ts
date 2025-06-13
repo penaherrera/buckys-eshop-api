@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  ConflictException,
-  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -12,7 +10,6 @@ import { CheckoutDto } from '../dtos/checkout.dto';
 import { OrdersService } from '../../orders/services/orders.service';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { OrderEntity } from '../../orders/entities/order.entity';
-import { ConfigType } from '@nestjs/config';
 import { StripeService } from '../../stripe/services/stripe.service';
 
 @Injectable()

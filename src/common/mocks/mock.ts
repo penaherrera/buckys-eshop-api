@@ -14,7 +14,6 @@ import { OrderEntity } from '../../orders/entities/order.entity';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { TransactionEntity } from '../../transactions/entities/transaction.entity';
 import { LikeEntity } from '../../likes/entities/like.entity';
-import { CartDto } from '../../carts/dtos/cart.dto';
 
 const now = new Date();
 
@@ -197,7 +196,7 @@ export const variantMock: VariantEntity = {
   product: productMock,
 };
 
-export const cartDtoMock: CartDto = {
+export const cartDtoMock: CartEntity = {
   id: 1,
   userId: 1,
   cartProducts: [

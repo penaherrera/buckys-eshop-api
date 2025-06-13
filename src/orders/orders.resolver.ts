@@ -5,7 +5,6 @@ import { OrdersService } from './services/orders.service';
 import { UseFilters, UseGuards } from '@nestjs/common';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
 import { AdminGuard } from '../common/guards/admin.guard';
-import { OrderDto } from './dtos/order.dto';
 
 @UseFilters(GraphQlExceptionFilter)
 @UseGuards(JwtAuthGuard)
@@ -18,7 +17,7 @@ export class OrdersResolver {
     name: 'allOrders',
     description: 'Admin Query: retrieve all existing orders',
   })
-  getAllOrders(): Promise<OrderDto[]> {
+  getAllOrders(): Promise<OrderEntity[]> {
     return this.ordersService.getAllOrders();
   }
 }

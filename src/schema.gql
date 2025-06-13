@@ -2,23 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserDto {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  address: String!
-  phoneNumber: String!
-  email: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type AuthEntity {
   id: ID!
   userId: Float!
@@ -26,6 +9,11 @@ type AuthEntity {
   createdAt: DateTime!
   user: UserEntity!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type RoleEntity {
   id: ID!
@@ -140,69 +128,12 @@ type CartEntity {
   cartProducts: [CartProductEntity!]
 }
 
-type CartProductDto {
-  id: ID!
-  variantId: Int!
-  cartId: Int!
-  createdAt: DateTime!
-}
-
-type CartDto {
-  id: ID!
-  userId: Int!
-  user: UserDto!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  cartProducts: [CartProductDto!]
-}
-
-type BrandDto {
-  id: ID!
-  name: String!
-  description: String!
-  isActive: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  products: [ProductDto!]
-}
-
-type CategoryDto {
-  id: ID!
-  name: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  products: [ProductDto!]
-}
-
-type VariantDto {
-  id: ID!
+type LikeEntity {
+  id: Int!
   productId: Int!
-  stock: Int!
-  color: String!
-  size: SizeEnum!
+  userId: Int!
   createdAt: DateTime!
-  updatedAt: DateTime!
-  product: ProductDto
-}
-
-type ProductDto {
-  id: ID!
-  categoryId: Int!
-  brandId: Int!
-  isActive: Boolean!
-  inStock: Boolean!
-  name: String!
-  description: String!
-  price: Float!
-  gender: GenderEnum!
-  clothingType: ClothingTypeEnum!
-  category: CategoryDto
-  brand: BrandDto
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  variants: [VariantDto!]
-  imageSecureUrl: String
+  products: [ProductEntity!]
 }
 
 type TransactionEntity {
@@ -227,35 +158,6 @@ type OrderEntity {
   transactions: [TransactionEntity!]
 }
 
-type TransactionDto {
-  id: ID!
-  orderId: Int!
-  amount: Int!
-  stripeChargeId: String!
-  receiptUrl: String!
-  currency: String!
-  stripeStatus: String!
-  createdAt: DateTime!
-  order: OrderDto!
-}
-
-type OrderDto {
-  id: ID!
-  cartId: Int!
-  status: StatusEnum!
-  stripePaymentIntentId: String!
-  createdAt: DateTime!
-  cart: CartDto!
-  transactions: [TransactionDto!]
-}
-
-enum StatusEnum {
-  PENDING
-  ACTIVE
-  COMPLETED
-  CANCELLED
-}
-
 type PaginationMetadata {
   perPage: Int!
   total: Int!
@@ -266,16 +168,8 @@ type PaginationMetadata {
 }
 
 type PaginatedProductsDto {
-  data: [ProductDto!]!
+  data: [ProductEntity!]!
   meta: PaginationMetadata!
-}
-
-type LikeEntity {
-  id: Int!
-  productId: Int!
-  userId: Int!
-  createdAt: DateTime!
-  products: [ProductEntity!]
 }
 
 type Query {

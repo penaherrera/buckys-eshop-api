@@ -7,9 +7,8 @@ import { BrandEntity } from '../../brands/entities/brand.entity';
 import { BrandsService } from '../../brands/services/brands.service';
 import { VariantEntity } from '../../variants/entities/variant.entity';
 import { VariantsService } from '../../variants/services/variants.service';
-import { VariantDto } from '../../variants/dtos/responses/variant.dto';
 import { ProductsService } from '../../products/services/products.service';
-import { ProductDto } from '../../products/dtos/responses/product.dto';
+import { ProductEntity } from 'src/products/entities/product.entity';
 
 @Injectable()
 export class DataloaderService {
@@ -57,7 +56,7 @@ export class DataloaderService {
   }
 
   private _createCartProductsLoader() {
-    return new DataLoader<number, VariantDto | null>(
+    return new DataLoader<number, VariantEntity | null>(
       async (cartProductIds: readonly number[]) => {
         return await this.variantsService.getAllVariantsByCartProductIds([
           ...cartProductIds,
@@ -67,7 +66,7 @@ export class DataloaderService {
   }
 
   private _createProductsLoader() {
-    return new DataLoader<number, ProductDto | null>(
+    return new DataLoader<number, ProductEntity | null>(
       async (variantIds: readonly number[]) => {
         return this.productsService.getAllProductsByVariantIds([...variantIds]);
       },

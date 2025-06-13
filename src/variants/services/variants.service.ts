@@ -4,7 +4,6 @@ import { VariantEntity } from '../entities/variant.entity';
 import { SizeEnum } from '../enums/size.enum';
 import { CreateVariantInput } from '../dtos/create-variant.input';
 import { plainToInstance } from 'class-transformer';
-import { VariantDto } from '../dtos/responses/variant.dto';
 
 @Injectable()
 export class VariantsService {
@@ -53,7 +52,7 @@ export class VariantsService {
 
   async getAllVariantsByCartProductIds(
     cartProductIds: number[],
-  ): Promise<(VariantDto | null)[]> {
+  ): Promise<(VariantEntity | null)[]> {
     const cartProducts = await this.prismaService.cartProducts.findMany({
       where: {
         id: { in: cartProductIds },
@@ -69,7 +68,7 @@ export class VariantsService {
         return null;
       }
 
-      return plainToInstance(VariantDto, cartProduct.variant);
+      return plainToInstance(VariantEntity, cartProduct.variant);
     });
 
     return variants;

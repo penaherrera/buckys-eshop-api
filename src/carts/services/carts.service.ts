@@ -1,14 +1,14 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
-import { CartDto } from '../dtos/cart.dto';
+import { CartEntity } from '../entities/cart.entity';
 
 @Injectable()
 export class CartsService {
   private readonly logger = new Logger(CartsService.name);
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUserLastCart(userId: number): Promise<CartDto | null> {
+  async getUserLastCart(userId: number): Promise<CartEntity | null> {
     const cart = await this.prismaService.cart.findFirst({
       where: { userId },
       include: {
@@ -24,6 +24,6 @@ export class CartsService {
       throw new NotFoundException('User has no carts');
     }
 
-    return plainToInstance(CartDto, cart);
+    return plainToInstance(CartEntity, cart);
   }
 }

@@ -1,11 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ProductDto } from './product.dto';
 import { PaginationMetadata } from '../../../common/pagination/pagination.type';
+import { ProductEntity } from '../../../products/entities/product.entity';
 
 @ObjectType()
 export class PaginatedProductsDto {
-  @Field(() => [ProductDto])
-  data: ProductDto[];
+  @Field(() => [ProductEntity])
+  data: ProductEntity[];
 
   @Field(() => PaginationMetadata)
   meta: PaginationMetadata;
