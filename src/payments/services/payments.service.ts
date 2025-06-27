@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ConflictException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -11,18 +10,17 @@ import { CheckoutDto } from '../dtos/checkout.dto';
 import { OrdersService } from '../../orders/services/orders.service';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { OrderEntity } from '../../orders/entities/order.entity';
+import { StripeService } from '../../stripe/services/stripe.service';
 
 @Injectable()
 export class PaymentsService {
   private readonly logger = new Logger(PaymentsService.name);
-  private stripe: Stripe;
 
   constructor(
     private readonly prismaService: PrismaService,
     private readonly ordersService: OrdersService,
-  ) {
-    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
-  }
+    private readonly stripeService: StripeService,
+  ) {}
 
   async createPaymentIntent(
     checkoutDto: CheckoutDto,
@@ -30,10 +28,10 @@ export class PaymentsService {
     const { currency, amount, cartId } = checkoutDto;
 
     try {
-      const paymentIntent = await this.stripe.paymentIntents.create({
+      const paymentIntent = await this.stripeService.createPaymentIntent(
         amount,
         currency,
-      });
+      );
       await this.ordersService.create(cartId, paymentIntent.id);
       this.logger.log(`PaymentIntent created successfully`);
       this.logger.log('Order created successfully');
@@ -47,13 +45,7 @@ export class PaymentsService {
 
   async handleWebhook(rawBody, signature: string): Promise<void> {
     try {
-      const event = this.stripe.webhooks.constructEvent(
-        rawBody,
-        signature,
-        process.env.STRIPE_WEBHOOK || '',
-      );
-
-      this.logger.log('Stripe Webhook Event Received:', event.type);
+      const event = await this.stripeService.constructEvent(rawBody, signature);
 
       switch (event.type) {
         case 'charge.succeeded':
@@ -69,7 +61,7 @@ export class PaymentsService {
   }
 
   private async handleChargeSucceeded(charge: Stripe.Charge): Promise<void> {
-    const order = await this.validateAndGetOrder(charge);
+    const order = await this.getOrder(charge);
 
     await this.prismaService.transaction.create({
       data: {
@@ -91,7 +83,7 @@ export class PaymentsService {
   }
 
   private async handleChargeFailed(charge: Stripe.Charge): Promise<void> {
-    const order = await this.validateAndGetOrder(charge);
+    const order = await this.getOrder(charge);
 
     await this.prismaService.transaction.create({
       data: {
@@ -107,9 +99,7 @@ export class PaymentsService {
     this.logger.warn(`Transaction created for failed charge ${charge.id}`);
   }
 
-  private async validateAndGetOrder(
-    charge: Stripe.Charge,
-  ): Promise<OrderEntity> {
+  private async getOrder(charge: Stripe.Charge): Promise<OrderEntity> {
     if (!charge.payment_intent) {
       this.logger.error('Charge without payment_intent:', charge.id);
       throw new BadRequestException('Missing payment_intent in charge');

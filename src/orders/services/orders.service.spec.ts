@@ -9,7 +9,7 @@ import {
   ordersMock,
   loggerMock,
 } from '../../common/mocks/mock';
-import { OrderDto } from '../dtos/order.dto';
+import { OrderEntity } from '../entities/order.entity';
 
 describe('OrdersService', () => {
   let service: OrdersService;
@@ -114,7 +114,7 @@ describe('OrdersService', () => {
       });
 
       expect(result).toBeInstanceOf(Array);
-      expect(result[0]).toBeInstanceOf(OrderDto);
+      expect(result[0]).toBeInstanceOf(OrderEntity);
     });
   });
 
@@ -142,7 +142,7 @@ describe('OrdersService', () => {
       });
 
       expect(result).toBeInstanceOf(Array);
-      expect(result[0]).toBeInstanceOf(OrderDto);
+      expect(result[0]).toBeInstanceOf(OrderEntity);
     });
   });
 });

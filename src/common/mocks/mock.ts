@@ -13,8 +13,7 @@ import { VariantEntity } from '../../variants/entities/variant.entity';
 import { OrderEntity } from '../../orders/entities/order.entity';
 import { StatusEnum } from '../../orders/enums/status.enum';
 import { TransactionEntity } from '../../transactions/entities/transaction.entity';
-import { LikeEntity } from 'src/likes/entities/like.entity';
-import { CheckoutDto } from 'src/payments/dtos/checkout.dto';
+import { LikeEntity } from '../../likes/entities/like.entity';
 
 const now = new Date();
 
@@ -197,6 +196,21 @@ export const variantMock: VariantEntity = {
   product: productMock,
 };
 
+export const cartDtoMock: CartEntity = {
+  id: 1,
+  userId: 1,
+  cartProducts: [
+    {
+      id: 1,
+      variantId: 1,
+      cartId: 1,
+      createdAt: now,
+    },
+  ],
+  createdAt: now,
+  updatedAt: now,
+};
+
 export const cartMock: CartEntity = {
   id: 1,
   userId: 1,
@@ -370,6 +384,36 @@ export const paymentIntentMock = {
   amount: 5000,
   currency: 'usd',
   status: 'requires_payment_method',
+};
+
+export const chargeMock = {
+  id: 'ch_test123',
+  amount: 2000,
+  currency: 'usd',
+  payment_intent: 'pi_test123',
+  receipt_url: 'https://pay.stripe.com/receipts/test',
+};
+
+export const uploadedImageMock = {
+  public_id: 'sample_public_id_123',
+  version: 1638360000,
+  signature: 'sample_signature_hash',
+  width: 800,
+  height: 600,
+  format: 'jpg',
+  resource_type: 'image',
+  created_at: '2021-12-01T10:00:00Z',
+  tags: [],
+  bytes: 85678,
+  type: 'upload',
+  etag: 'sample_etag_hash',
+  placeholder: false,
+  url: 'http://res.cloudinary.com/demo/image/upload/v1638360000/sample_public_id_123.jpg',
+  secure_url:
+    'https://res.cloudinary.com/demo/image/upload/v1638360000/sample_public_id_123.jpg',
+  access_mode: 'public',
+  original_filename: 'test_image',
+  api_key: '123456789012345',
 };
 
 export const loggerMock = {

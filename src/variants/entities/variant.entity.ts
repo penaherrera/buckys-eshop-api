@@ -4,15 +4,10 @@ import {
   ID,
   Int,
   ObjectType,
-  registerEnumType,
 } from '@nestjs/graphql';
 import { Variant } from '@prisma/client';
 import { SizeEnum } from '../enums/size.enum';
 import { ProductEntity } from '../../products/entities/product.entity';
-
-registerEnumType(SizeEnum, {
-  name: 'SizeEnum',
-});
 
 @ObjectType()
 export class VariantEntity implements Variant {

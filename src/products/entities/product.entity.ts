@@ -14,13 +14,6 @@ import { GenderEnum } from '../enums/gender.enum';
 import { ClothingTypeEnum } from '../enums/clothing-type.enum';
 import { Expose, Type } from 'class-transformer';
 
-registerEnumType(GenderEnum, {
-  name: 'GenderEnum',
-});
-
-registerEnumType(ClothingTypeEnum, {
-  name: 'ClothingTypeEnum',
-});
 @ObjectType()
 export class ProductEntity implements Product {
   @Field(() => ID)

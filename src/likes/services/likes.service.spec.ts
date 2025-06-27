@@ -10,7 +10,7 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 import { ConsoleLogger, NotFoundException } from '@nestjs/common';
 import { createPrismaMockService } from '../../common/mocks';
 import { LikesService } from './likes.service';
-import { LikeDto } from '../dtos/like.dto';
+import { LikeEntity } from '../entities/like.entity';
 
 describe('LikesService', () => {
   let service: LikesService;
@@ -74,7 +74,7 @@ describe('LikesService', () => {
 
       const result = await service.toggleLike(userMock.id, productMock.id);
 
-      expect(result).toBeInstanceOf(LikeDto);
+      expect(result).toBeInstanceOf(LikeEntity);
 
       expect(result).toEqual(
         expect.objectContaining({

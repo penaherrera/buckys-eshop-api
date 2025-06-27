@@ -7,6 +7,8 @@ import { BrandEntity } from '../../brands/entities/brand.entity';
 import { BrandsService } from '../../brands/services/brands.service';
 import { VariantEntity } from '../../variants/entities/variant.entity';
 import { VariantsService } from '../../variants/services/variants.service';
+import { ProductsService } from '../../products/services/products.service';
+import { ProductEntity } from 'src/products/entities/product.entity';
 
 @Injectable()
 export class DataloaderService {
@@ -14,6 +16,7 @@ export class DataloaderService {
     private readonly categoriesService: CategoriesService,
     private readonly brandsService: BrandsService,
     private readonly variantsService: VariantsService,
+    private readonly productsService: ProductsService,
   ) {}
 
   getLoaders(): IDataloaders {
@@ -21,6 +24,8 @@ export class DataloaderService {
       categoriesLoader: this._createCategoriesLoader(),
       brandsLoader: this._createBrandsLoader(),
       variantsLoader: this._createVariantsLoader(),
+      cartProductsLoader: this._createCartProductsLoader(),
+      productsLoader: this._createProductsLoader(),
     };
 
     return loaders;
@@ -46,6 +51,24 @@ export class DataloaderService {
         return await this.variantsService.getAllVariantsByProductIds(
           productIds,
         );
+      },
+    );
+  }
+
+  private _createCartProductsLoader() {
+    return new DataLoader<number, VariantEntity | null>(
+      async (cartProductIds: readonly number[]) => {
+        return await this.variantsService.getAllVariantsByCartProductIds([
+          ...cartProductIds,
+        ]);
+      },
+    );
+  }
+
+  private _createProductsLoader() {
+    return new DataLoader<number, ProductEntity | null>(
+      async (variantIds: readonly number[]) => {
+        return this.productsService.getAllProductsByVariantIds([...variantIds]);
       },
     );
   }

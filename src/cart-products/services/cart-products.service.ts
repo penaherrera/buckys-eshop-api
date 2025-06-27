@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import { CartProductDto } from '../dtos/cart-product.dto';
 import { plainToInstance } from 'class-transformer';
+import { CartProductEntity } from '../entities/cart-product.entity';
 
 @Injectable()
 export class CartProductsService {
@@ -18,7 +18,7 @@ export class CartProductsService {
     userId: number,
     variantId: number,
     cartId?: number | null,
-  ): Promise<CartProductDto> {
+  ): Promise<CartProductEntity> {
     const variant = await this.prismaService.variant.findUnique({
       where: { id: variantId },
       include: { product: true },
@@ -62,7 +62,7 @@ export class CartProductsService {
       },
     });
 
-    return plainToInstance(CartProductDto, {
+    return plainToInstance(CartProductEntity, {
       ...cartProduct,
       variant: {
         ...cartProduct.variant,
@@ -100,7 +100,7 @@ export class CartProductsService {
 
     if (!cart) {
       this.logger.error(`Cart with id ${cartId} not found`);
-      throw new NotFoundException();
+      throw new NotFoundException('Cart not found');
     }
 
     await this.prismaService.cartProducts.deleteMany({

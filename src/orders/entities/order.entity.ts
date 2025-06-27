@@ -4,16 +4,10 @@ import {
   ID,
   Int,
   ObjectType,
-  registerEnumType,
 } from '@nestjs/graphql';
 import { Order, Status } from '@prisma/client';
 import { CartEntity } from '../../carts/entities/cart.entity';
-import { StatusEnum } from '../enums/status.enum';
 import { TransactionEntity } from '../../transactions/entities/transaction.entity';
-
-registerEnumType(StatusEnum, {
-  name: 'StatusEnum',
-});
 
 @ObjectType()
 export class OrderEntity implements Order {

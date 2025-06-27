@@ -9,7 +9,7 @@ import {
   createPrismaMockService,
 } from '../mocks';
 import { adminRoleMock, clientRoleMock, userMock } from '../mocks/mock';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from '../../users/entities/user.entity';
 
 describe('AdminGuard', () => {
   let guard: AdminGuard;

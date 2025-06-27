@@ -2,7 +2,6 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { OrderEntity } from '../entities/order.entity';
 import { plainToInstance } from 'class-transformer';
-import { OrderDto } from '../dtos/order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -39,7 +38,7 @@ export class OrdersService {
     return order;
   }
 
-  async getUserOrders(userId: number): Promise<OrderDto[]> {
+  async getUserOrders(userId: number): Promise<OrderEntity[]> {
     const orders = await this.prismaService.order.findMany({
       where: { cart: { userId } },
       orderBy: { createdAt: 'desc' },
@@ -74,10 +73,10 @@ export class OrdersService {
       },
     }));
 
-    return plainToInstance(OrderDto, transformedOrders);
+    return plainToInstance(OrderEntity, transformedOrders);
   }
 
-  async getAllOrders(): Promise<OrderDto[]> {
+  async getAllOrders(): Promise<OrderEntity[]> {
     const orders = await this.prismaService.order.findMany({
       orderBy: { createdAt: 'desc' },
       include: {
@@ -113,6 +112,6 @@ export class OrdersService {
       },
     }));
 
-    return plainToInstance(OrderDto, transformedOrders);
+    return plainToInstance(OrderEntity, transformedOrders);
   }
 }

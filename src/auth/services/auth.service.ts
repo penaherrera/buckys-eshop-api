@@ -1,4 +1,9 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../../users/services/users.service';
 import { AuthCredentialsDto } from '../dtos/requests/auth-credentials.dto';
@@ -11,26 +16,30 @@ import { JwtPayloadAuth } from '../interfaces/jwt-payload-auth.interface';
 import { compare } from 'bcryptjs';
 import { Auth } from '@prisma/client';
 import { hasExpired } from '../../common/utils/has-expired';
+import authConfig from '../config/auth.config';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   protected readonly logger = new Logger(AuthService.name);
 
   constructor(
+    @Inject(authConfig.KEY)
+    private readonly authConfiguration: ConfigType<typeof authConfig>,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
   ) {}
 
-  private readonly REFRESH_EXP: number = parseInt(
-    process.env.JWT_EXP_REFRESH || '0',
-  );
-  private readonly JWT_EXP: number = parseInt(process.env.JWT_EXP || '0');
-
   async create(userId: number): Promise<Auth> {
+    const { jwtExpiration, jwtRefreshExpiration } = this.authConfiguration;
+
     const now = new Date();
     const refreshExpiresAt = new Date(
-      now.setMinutes(now.getMinutes() + (this.JWT_EXP + this.REFRESH_EXP)),
+      now.setMinutes(
+        now.getMinutes() +
+          (parseInt(jwtExpiration) + parseInt(jwtRefreshExpiration)),
+      ),
     );
 
     const jti = crypto.randomUUID();

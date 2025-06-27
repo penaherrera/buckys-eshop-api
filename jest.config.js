@@ -25,6 +25,7 @@ export const testPathIgnorePatterns = [
   '\\.strategy\\.ts$',
   '\\.filter\\.ts$',
   '\\.constants\\.ts$',
+  '\\.config\\.ts$',
   '\\.type\\.ts$',
 ];
 export const coveragePathIgnorePatterns = [
@@ -40,6 +41,7 @@ export const coveragePathIgnorePatterns = [
   '\\.filter\\.ts$',
   '\\.constants\\.ts$',
   '\\.type\\.ts$',
+  '\\.config\\.ts$',
   'main.ts',
   'env.validation.ts',
   'dataloader.service.ts',

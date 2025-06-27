@@ -19,7 +19,6 @@ import { IDataloaders } from '../dataloader/interfaces/dataloader.interface';
 import { BrandEntity } from '../brands/entities/brand.entity';
 import { VariantEntity } from '../variants/entities/variant.entity';
 import { CreateProductWithVariantsInput } from './dtos/create-product-variants.input';
-import { ProductDto } from './dtos/responses/product.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
 import { PaginatedProductsDto } from './dtos/responses/paginated-product.dto';
 import { PaginationArgs } from '../common/pagination/dtos/pagination.dto';
@@ -36,11 +35,12 @@ export class ProductsResolver {
   createProduct(
     @Args('createProductWithVariantsInput')
     createProductWithVariantsInput: CreateProductWithVariantsInput,
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.productsService.createWithVariants(
       createProductWithVariantsInput,
     );
   }
+
   @Query(() => PaginatedProductsDto, {
     name: 'allProducts',
     description: 'Get all active products with pagination, no JWT required',
@@ -95,7 +95,7 @@ export class ProductsResolver {
   })
   toggleProductActive(
     @Args('id', { type: () => Int }) id: number,
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.productsService.toggleActive(id);
   }
 

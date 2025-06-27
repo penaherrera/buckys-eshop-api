@@ -5,13 +5,13 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.input';
 import { VariantsService } from '../../variants/services/variants.service';
 import { plainToInstance } from 'class-transformer';
-import { ProductDto } from '../dtos/responses/product.dto';
 import { PaginationArgs } from '../../common/pagination/dtos/pagination.dto';
 import { PaginatedProductsDto } from '../dtos/responses/paginated-product.dto';
 import {
   calculatePagination,
   paginationMetadata,
 } from '../../common/pagination/pagination';
+import { ProductEntity } from '../entities/product.entity';
 
 @Injectable()
 export class ProductsService {
@@ -24,7 +24,7 @@ export class ProductsService {
 
   async createWithVariants(
     createProductWithVariantsInput: CreateProductWithVariantsInput,
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     const product = await this.create(createProductWithVariantsInput.product);
 
     await this.variantsService.createMany({
@@ -32,10 +32,10 @@ export class ProductsService {
       variants: createProductWithVariantsInput.variants,
     });
 
-    return plainToInstance(ProductDto, product);
+    return plainToInstance(ProductEntity, product);
   }
 
-  async create(createProductInput: CreateProductInput): Promise<ProductDto> {
+  async create(createProductInput: CreateProductInput): Promise<ProductEntity> {
     await this.verifyIdsExist(createProductInput);
 
     const product = await this.prismaService.product.create({
@@ -46,7 +46,7 @@ export class ProductsService {
 
     this.logger.log('Product created successfully');
 
-    return plainToInstance(ProductDto, product);
+    return plainToInstance(ProductEntity, product);
   }
 
   async findAll(args: PaginationArgs): Promise<PaginatedProductsDto> {
@@ -79,7 +79,7 @@ export class ProductsService {
       }),
     ]);
 
-    const productDtos = plainToInstance(ProductDto, products);
+    const productDtos = plainToInstance(ProductEntity, products);
 
     const meta = paginationMetadata(validPage, validPerPage, total);
 
@@ -92,7 +92,7 @@ export class ProductsService {
   async update(
     id: number,
     updateProductInput: UpdateProductInput,
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     const existingProduct = await this.prismaService.product.findUnique({
       where: { id },
     });
@@ -113,7 +113,7 @@ export class ProductsService {
 
     this.logger.log(`Product with ID ${id} updated successfully`);
 
-    return plainToInstance(ProductDto, updatedProduct);
+    return plainToInstance(ProductEntity, updatedProduct);
   }
 
   async remove(id: number): Promise<boolean> {
@@ -136,7 +136,7 @@ export class ProductsService {
     return true;
   }
 
-  async toggleActive(id: number): Promise<ProductDto> {
+  async toggleActive(id: number): Promise<ProductEntity> {
     const existingProduct = await this.prismaService.product.findUnique({
       where: { id },
     });
@@ -159,12 +159,10 @@ export class ProductsService {
       `Product with ID ${id} toggled active status to ${updatedProduct.isActive}`,
     );
 
-    return plainToInstance(ProductDto, updatedProduct);
+    return plainToInstance(ProductEntity, updatedProduct);
   }
 
-  private async verifyIdsExist(
-    input: Partial<Pick<CreateProductInput, 'categoryId' | 'brandId'>>,
-  ): Promise<void> {
+  private async verifyIdsExist(input: BrandAndCategoryIds): Promise<void> {
     const { categoryId, brandId } = input;
 
     if (categoryId !== undefined) {
@@ -186,5 +184,32 @@ export class ProductsService {
         throw new NotFoundException('Brand not found');
       }
     }
+  }
+
+  async getAllProductsByVariantIds(
+    variantIds: number[],
+  ): Promise<(ProductEntity | null)[]> {
+    const variants = await this.prismaService.variant.findMany({
+      where: {
+        id: {
+          in: variantIds,
+        },
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    const variantToProductMap = new Map<number, any>();
+    variants.forEach((variant) => {
+      if (variant.product) {
+        variantToProductMap.set(variant.id, variant.product);
+      }
+    });
+
+    return variantIds.map((variantId) => {
+      const product = variantToProductMap.get(variantId);
+      return product ? plainToInstance(ProductEntity, product) : null;
+    });
   }
 }

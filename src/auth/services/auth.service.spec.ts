@@ -13,6 +13,8 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthCredentialsDto } from '../dtos/requests/auth-credentials.dto';
 import { LogInData } from '../interfaces/sign-in-data.interface';
 import { UnauthorizedException } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import authConfig from '../config/auth.config';
 
 jest.mock('bcryptjs', () => ({
   compare: jest.fn(),
@@ -26,6 +28,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot(), ConfigModule.forFeature(authConfig)],
       providers: [
         AuthService,
         {

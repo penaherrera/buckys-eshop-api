@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
-import { LikeDto } from '../dtos/like.dto';
-import { ProductDto } from '../../products/dtos/responses/product.dto';
+import { LikeEntity } from '../entities/like.entity';
+import { ProductEntity } from '../../products/entities/product.entity';
 
 @Injectable()
 export class LikesService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUserLikes(userId: number): Promise<ProductDto[] | null> {
+  async getUserLikes(userId: number): Promise<ProductEntity[] | null> {
     const likes = await this.prismaService.like.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
@@ -20,13 +20,16 @@ export class LikesService {
     }
 
     return likes.map((like) =>
-      plainToInstance(ProductDto, {
+      plainToInstance(ProductEntity, {
         ...like.product,
       }),
     );
   }
 
-  async toggleLike(userId: number, productId: number): Promise<LikeDto | null> {
+  async toggleLike(
+    userId: number,
+    productId: number,
+  ): Promise<LikeEntity | null> {
     const product = await this.prismaService.product.findUnique({
       where: { id: productId },
     });
@@ -56,7 +59,7 @@ export class LikesService {
         },
       });
 
-      return plainToInstance(LikeDto, newLike);
+      return plainToInstance(LikeEntity, newLike);
     }
   }
 }

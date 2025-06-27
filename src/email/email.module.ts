@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { EmailService } from './email.service';
+import { EmailService } from './services/email.service';
 import { SendGridClient } from './sendgrid-client';
-import { JwtModule } from '@nestjs/jwt';
+import emailConfig from './config/email.config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
+  imports: [ConfigModule.forFeature(emailConfig)],
   providers: [EmailService, SendGridClient],
   exports: [EmailService],
 })
