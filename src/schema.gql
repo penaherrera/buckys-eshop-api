@@ -1,0 +1,429 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserDto {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  address: String!
+  phoneNumber: String!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthEntity {
+  id: ID!
+  userId: Float!
+  refreshExpiresAt: DateTime!
+  createdAt: DateTime!
+  user: UserEntity!
+}
+
+type RoleEntity {
+  id: ID!
+  name: String!
+  slug: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: [UserEntity!]
+}
+
+type UserEntity {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  address: String!
+  phoneNumber: String!
+  email: String!
+  roleId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  auth: [AuthEntity!]
+  role: RoleEntity!
+}
+
+type BrandEntity {
+  id: ID!
+  name: String!
+  description: String!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  products: [ProductEntity!]
+}
+
+type CategoryEntity {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  products: [ProductEntity!]
+}
+
+type ProductEntity {
+  id: ID!
+  categoryId: Float!
+  brandId: Float!
+  isActive: Boolean!
+  inStock: Boolean!
+  name: String!
+  description: String!
+  price: Float!
+  gender: GenderEnum!
+  clothingType: ClothingTypeEnum!
+  category: CategoryEntity!
+  brand: BrandEntity!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  variants: [VariantEntity!]!
+  imageSecureUrl: String
+}
+
+enum GenderEnum {
+  UNISEX
+  MALE
+  FEMALE
+}
+
+enum ClothingTypeEnum {
+  CLOTHING
+  TSHIRT
+  FOOTWEAR
+  PANTS
+  HAT
+}
+
+type VariantEntity {
+  id: Int!
+  productId: Int!
+  stock: Int!
+  color: String!
+  size: SizeEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  product: ProductEntity!
+}
+
+enum SizeEnum {
+  EXTRA_SMALL
+  SMALL
+  MEDIUM
+  LARGE
+  EXTRA_LARGE
+}
+
+type CartProductEntity {
+  id: ID!
+  variantId: Float!
+  cartId: Float!
+  variant: VariantEntity
+  cart: CartEntity
+  createdAt: DateTime!
+}
+
+type CartEntity {
+  id: ID!
+  userId: Float!
+  user: UserEntity!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  cartProducts: [CartProductEntity!]
+}
+
+type BrandDto {
+  id: ID!
+  name: String!
+  description: String!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  products: [ProductDto!]
+}
+
+type CategoryDto {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  products: [ProductDto!]
+}
+
+type ProductDto {
+  id: ID!
+  categoryId: ID!
+  brandId: ID!
+  isActive: Boolean!
+  inStock: Boolean!
+  name: String!
+  description: String!
+  price: Float!
+  gender: GenderEnum!
+  clothingType: ClothingTypeEnum!
+  category: CategoryDto
+  brand: BrandDto
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  variants: [VariantDto!]
+  imageSecureUrl: String
+}
+
+type VariantDto {
+  id: ID!
+  productId: ID!
+  stock: Int!
+  color: String!
+  size: SizeEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  product: ProductDto
+}
+
+type CartProductDto {
+  id: ID!
+  variantId: ID!
+  cartId: ID!
+  variant: VariantDto
+  cart: CartDto
+  createdAt: DateTime!
+}
+
+type CartDto {
+  id: ID!
+  userId: ID!
+  user: UserDto!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  cartProducts: [CartProductDto!]
+}
+
+type TransactionEntity {
+  id: ID!
+  orderId: Int!
+  amount: Int!
+  stripeChargeId: String!
+  receiptUrl: String!
+  currency: String!
+  stripeStatus: String!
+  createdAt: DateTime!
+  order: OrderEntity!
+}
+
+type OrderEntity {
+  id: ID!
+  cartId: Int!
+  status: String!
+  stripePaymentIntendId: String!
+  createdAt: DateTime!
+  cart: CartEntity!
+  transactions: [TransactionEntity!]
+}
+
+type TransactionDto {
+  id: ID!
+  orderId: Int!
+  amount: Int!
+  stripeChargeId: String!
+  receiptUrl: String!
+  currency: String!
+  stripeStatus: String!
+  createdAt: DateTime!
+  order: OrderDto!
+}
+
+type OrderDto {
+  id: ID!
+  cartId: Int!
+  status: StatusEnum!
+  stripePaymentIntentId: String!
+  createdAt: DateTime!
+  cart: CartDto!
+  transactions: [TransactionDto!]
+}
+
+enum StatusEnum {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+type PaginationMetadata {
+  perPage: Int!
+  total: Int!
+  page: Int!
+  totalPages: Int!
+  prevPage: Int
+  nextPage: Int
+}
+
+type PaginatedProductsDto {
+  data: [ProductDto!]!
+  meta: PaginationMetadata!
+}
+
+type LikeEntity {
+  id: Int!
+  productId: Int!
+  userId: Int!
+  createdAt: DateTime!
+  products: [ProductEntity!]
+}
+
+type Query {
+  """Get current user information"""
+  me: UserEntity!
+
+  """Get current user last cart"""
+  myCart: CartEntity
+
+  """Get current user likes"""
+  myLikes: [ProductEntity!]
+
+  """Retrieve current user orders"""
+  myOrders: [OrderEntity!]!
+
+  """Get all active products with pagination, no JWT required"""
+  allProducts(page: Int = 1, perPage: Int = 10, categoryId: Int): PaginatedProductsDto!
+
+  """Admin Query: retrieve all existing orders"""
+  allOrders: [OrderEntity!]!
+}
+
+type Mutation {
+  """Update current user information"""
+  updateUser(updateUserInput: UpdateUserInput!): UserEntity!
+
+  """Admin Mutation: Create product with nested variants"""
+  createProductWithVariants(createProductWithVariantsInput: CreateProductWithVariantsInput!): ProductEntity!
+
+  """Admin Mutation: Update product info"""
+  updateProduct(productId: Float!, updateProductInput: UpdateProductInput!): ProductEntity!
+
+  """
+  Admin Mutation: Toggles the active status of a product (active/inactive)
+  """
+  toggleProductActive(id: Int!): ProductEntity!
+
+  """Admin Mutation: Delete a product with no Orders associated"""
+  deleteProduct(id: Int!): Boolean!
+
+  """Adds or removes a user's like from a product."""
+  toggleLike(productId: Int!): LikeEntity
+
+  """
+  Adds product to shopping cart (creates new cart if none exists). Accepts optional cartId for specific cart selection.
+  """
+  addToCart(variantId: Int!, cartId: Int): CartProductEntity!
+
+  """Remove a product from a cart"""
+  removeFromCart(cartProductId: Int!): Boolean!
+
+  """Remove all items from a cart"""
+  clearCart(cartId: Int!): Boolean!
+}
+
+"""Input type to update an user info"""
+input UpdateUserInput {
+  """First name of the user"""
+  firstName: String
+
+  """Last name of the user"""
+  lastName: String
+
+  """Address of the user"""
+  address: String
+
+  """Phone number of the user"""
+  phoneNumber: String
+
+  """Email number of the user"""
+  email: String
+}
+
+input CreateProductWithVariantsInput {
+  product: CreateProductInput!
+  variants: [CreateVariantInput!]!
+}
+
+input CreateProductInput {
+  """Category of the product"""
+  categoryId: Int!
+
+  """Brand of the product"""
+  brandId: Int!
+
+  """Product name"""
+  name: String!
+
+  """Product description"""
+  description: String!
+
+  """Product price"""
+  price: Float!
+
+  """Product is active or not"""
+  isActive: Boolean = true
+
+  """Shows if product is in stock"""
+  inStock: Boolean = true
+
+  """Clothing type of the product"""
+  clothingType: ClothingTypeEnum = CLOTHING
+
+  """Product gender"""
+  gender: GenderEnum = UNISEX
+}
+
+input CreateVariantInput {
+  """Product Id"""
+  productId: Int
+
+  """Stock quantity"""
+  stock: Int!
+
+  """Variant color"""
+  color: String!
+
+  """Variant size"""
+  size: SizeEnum = MEDIUM
+}
+
+input UpdateProductInput {
+  """Category of the product"""
+  categoryId: Int
+
+  """Brand of the product"""
+  brandId: Int
+
+  """Product name"""
+  name: String
+
+  """Product description"""
+  description: String
+
+  """Product price"""
+  price: Float
+
+  """Product is active or not"""
+  isActive: Boolean = true
+
+  """Shows if product is in stock"""
+  inStock: Boolean = true
+
+  """Clothing type of the product"""
+  clothingType: ClothingTypeEnum = CLOTHING
+
+  """Product gender"""
+  gender: GenderEnum = UNISEX
+}

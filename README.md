@@ -23,10 +23,64 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Bucky's Eshop API** 🛒👕  
+
+
+
+A robust e-commerce backend solution built with NestJS and GraphQL, designed specifically for clothing retailers. This API powers a complete online store platform with comprehensive features for product catalog management, order processing, customer accounts, and secure transactions. 
+
+The system efficiently handles all core e-commerce operations while providing the flexibility of GraphQL for data retrieval and the reliability of REST for specific services.
+
+
+### Key Features:
+- **GraphQL API** 🌐 for flexible data queries
+- **Stripe Integration** 💰 with webhook management
+- **CRUD Operations** 🛠️ for Products and Users
+- **User Authentication** 🔑 system using REST
+- **Image Handling** 🖼️ with Cloudinary
+- **Email Service** ✉️ via SendGrid
+
+### Integrated Services:
+- **Payments**: Stripe API
+- **Image Storage**: Cloudinary
+- **Email Service**: SendGrid
+
+> 💡 **Note**: No local database setup required - already deployed in the cloud! ☁️
+
+## GraphQL Documentation
+Explore the GraphQL schema and queries in our [API Documentation](https://studio.apollographql.com/org/carlos-penas-team-3/graphs)
+
+## Environment Variables Configuration
+
+You must create a `.env` file with the following variables to run the project:
+
+```env
+# Database
+DATABASE_URL=postgres://user:password@host:port/database_name
+
+# Authentication
+JWT_SECRET=your_jwt_secret_key_here
+JWT_EXP=3600  # JWT expiration time in seconds (e.g., 1 hour)
+JWT_EXP_REFRESH=86400  # Refresh token expiration (e.g., 24 hours)
+ADMIN_PASSWORD=your_admin_password_here
+
+# Third-party APIs
+SENDGRID_API_KEY=your_sendgrid_api_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK=your_stripe_webhook_secret
+
+# Cloud Storage (Cloudinary)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
+
+# Server Configuration
+NODE_PORT=3000  # Port where the Node server will run
+```
+
 
 ## Project setup
-
 ```bash
 $ npm install
 ```
@@ -40,59 +94,3 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
