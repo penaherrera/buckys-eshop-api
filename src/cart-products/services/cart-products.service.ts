@@ -100,7 +100,7 @@ export class CartProductsService {
 
     if (!cart) {
       this.logger.error(`Cart with id ${cartId} not found`);
-      throw NotFoundException;
+      throw new NotFoundException();
     }
 
     await this.prismaService.cartProducts.deleteMany({

@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateProductInput } from '../dtos/create-product.input';
 import { UpdateProductInput } from '../dtos/update-product.input';
 import { PrismaService } from '../../common/prisma/prisma.service';
-import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.inputs';
+import { CreateProductWithVariantsInput } from '../dtos/create-product-variants.input';
 import { VariantsService } from '../../variants/services/variants.service';
 import { plainToInstance } from 'class-transformer';
 import { ProductDto } from '../dtos/responses/product.dto';

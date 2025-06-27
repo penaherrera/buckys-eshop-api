@@ -18,7 +18,7 @@ import { CategoryEntity } from '../categories/entitites/category.entity';
 import { IDataloaders } from '../dataloader/interfaces/dataloader.interface';
 import { BrandEntity } from '../brands/entities/brand.entity';
 import { VariantEntity } from '../variants/entities/variant.entity';
-import { CreateProductWithVariantsInput } from './dtos/create-product-variants.inputs';
+import { CreateProductWithVariantsInput } from './dtos/create-product-variants.input';
 import { ProductDto } from './dtos/responses/product.dto';
 import { GraphQlExceptionFilter } from '../common/filters/graphql-exception.filter';
 import { PaginatedProductsDto } from './dtos/responses/paginated-product.dto';
